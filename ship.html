@@ -13,17 +13,17 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Home</a>
+                <a class="navbar-brand" href="ship.html">Captain's Quarters</a>
                 <div class="collapse navbar-collapse" id="menu">
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a href="navigation.html" class="nav-link">Navigation</a>
                         </li>
                         <li class="nav-item">
-                            <a href="education.html" class="nav-link">Crew</a>
+                            <a href="crew.html" class="nav-link">Crew</a>
                         </li>
                         <li class="nav-item">
-                            <a href="awards.html" class="nav-link">Inventory</a>
+                            <a href="inventory.html" class="nav-link">Inventory</a>
                         </li>
                         <button type="button" onclick = "nextDay()" class="btn btn-danger">Next Day</button>
                     </ul>
@@ -37,25 +37,35 @@
             </div>
             <div class="jumbotron">
                 <h1 class="display-4" id = "daysLeft"></h1>
+                <div id='if-part' style='visibility: hidden;'></button></div>
+                <div id='else-part' style='visibility: hidden'>do nothing</div>
               </div>
               <div>
               </div>
         </div>
     </body>
     <script>
+        var activeEvent = false;
         document.getElementById("name").innerHTML = "Captain,";
         if(!localStorage.getItem("daysLeft") || localStorage.getItem("daysLeft") == 0)
         {
             localStorage.setItem("daysLeft", 10);
         }
         
+        
         document.getElementById("daysLeft").innerHTML = localStorage.getItem("daysLeft") + " days before arrival at " + localStorage.getItem("nextCity");
         function nextDay()
         {
+            if(activeEvent)
+                return;
+            randomEvent();
             localStorage.setItem("daysLeft", localStorage.getItem("daysLeft")-1);
             updatePrices();
             if(localStorage.getItem("daysLeft") == 0)
+            {
+                updateInn();
                 window.location.href = "index.html";
+            }
             else
                 location.reload();
         }
@@ -74,13 +84,18 @@
                         /* special event? */
                         if (Math.random() >= 0.2) // no
                         {
-                            min = 0.75; max = 1;
+                            min = 0; max = 1.5;
                             multiplier = Math.random() * (max - min) + min;
                         }
                         else // yes
                         {
-                            min = 0.40; max = 0.5;
+                            min = 1.5; max = 2;
                             multiplier = Math.random() * (max - min) + min;
+                        }
+                        prices[keys[c]][g] -= Math.ceil((prices[keys[c]][g]/10) * multiplier);
+                        if(prices[keys[c]][g] <= 0)
+                        {
+                            prices[keys[c]][g] = 1;
                         }
                     }
                     else // up
@@ -88,20 +103,64 @@
                         /* special event? */
                         if (Math.random() >= 0.2) // no 
                         {
-                            min = 1; max = 1.5;
+                            min = 0; max = 1.5;
                             multiplier = Math.random() * (max - min) + min;
                         }
                         else // yes
                         {
-                            min = 2; max = 2.5;
+                            min = 1.5; max = 2;
                             multiplier = Math.random() * (max - min) + min;
                         }
+                        prices[keys[c]][g] += Math.ceil((prices[keys[c]][g]/10) * multiplier);
                     }
 
-                prices[keys[c]][g] = Math.ceil(prices[keys[c]][g] * multiplier);
+                //prices[keys[c]][g] = Math.ceil(prices[keys[c]][g] * multiplier);
                 }
             }
             localStorage.setItem("prices", JSON.stringify(prices));
         }
+        function updateInn() // generates crewmates for the inn
+        {
+            var inn = [];
+            var numAvailable = Math.floor(Math.random() * 6);
+
+            for (var i = 0; i < numAvailable; i++)
+            {
+                var names = ['Bill', 'Samuel', 'Pete', 'Louie', 'Sparrow', 'Jack', 'Vince', 'Gordon', 'Oscar', 'Wyatt', 'Edwin', 'Edward', 'Naoto', 'Goro', 'Jonas', 'Jacob', 'Wade', 'Randell'];
+                var name = names[Math.floor(Math.random()*names.length)] + " " + names[Math.floor(Math.random()*names.length)];
+                var fighting = Math.floor(Math.random()*101);
+                var piloting = Math.floor(Math.random()*101);
+                
+                var crewmate = {
+                    "name": name,
+                    "fighting": fighting,
+                    "piloting": piloting,
+                }
+
+                // inn[i] = "Crewmate " + (Math.floor(Math.random()*1000)+1);
+                inn[i] = crewmate;
+            }
+
+            localStorage.setItem("inn", JSON.stringify(inn));
+        }
+        function randomEvent()
+        {
+            if (Math.random() >= 0.5) // an event occurs
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+        var node;
+        if(true) {
+            node = document.getElementById('if-part');
+        }
+        else {
+            node = document.getElementById('else-part');
+        }
+    node.style.visibility = 'visible';
     </script>
 </html>

@@ -13,20 +13,20 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Home</a>
+                <a class="navbar-brand" href="index.html">Port</a>
                 <div class="collapse navbar-collapse" id="menu">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="about.html" class="nav-link">Market</a>
+                            <a href="market.html" class="nav-link">Market</a>
                         </li>
                         <li class="nav-item">
-                            <a href="education.html" class="nav-link">Crew</a>
+                            <a href="crew.html" class="nav-link">Crew</a>
                         </li>
                         <li class="nav-item">
-                            <a href="awards.html" class="nav-link">Inventory</a>
+                            <a href="landlubber_inventory.html" class="nav-link">Inventory</a>
                         </li>
                         <li class="nav-item">
-                            <a href="awards.html" class="nav-link">Inn</a>
+                            <a href="inn.html" class="nav-link">Inn</a>
                         </li>
                         <li class="nav-item">
                             <a href="awards.html" class="nav-link">Bank</a>
@@ -57,19 +57,70 @@
         {
             localStorage.setItem("nextCity", "Charleston");
         }
+        if(!localStorage.getItem("doubloons"))
+        {
+            localStorage.setItem("doubloons", 500);
+        }
         if(!localStorage.getItem("prices"))
         {
             var prices = {
-                "New York": [15, 100, 50],
-                "Charleston": [15, 100, 50],
-                "Havana": [15, 100, 50],
-                "Lisbon": [15, 100, 50],
-                "Casablanca": [15, 100, 50],
-                "Panama": [15, 100, 50]
+                "NewYork": [150, 1000, 250, 500, 250, 100],
+                "Charleston": [150, 1000, 250, 500, 250, 100],
+                "Havana": [150, 1000, 250, 500, 250, 100],
+                "Lisbon": [200, 1200, 300, 600, 300, 150],
+                "Casablanca": [150, 1000, 250, 500, 250, 100],
+                "Panama": [150, 1000, 250, 500, 250, 100]
             }
             localStorage.setItem("prices", JSON.stringify(prices));
-            alert(localStorage.getItem("prices"));
+        }
+        if(!localStorage.getItem("inventory"))
+        {
+            var inventory = {
+                "Spices": 0,
+                "Gold": 0,
+                "Rum": 0,
+                "Opium": 0,
+                "Tobacco": 0,
+                "Sugar": 0
+            }
+            localStorage.setItem("inventory", JSON.stringify(inventory));
+        }
+        if (!localStorage.getItem("crew"))
+        {
+            var crew = [];
+            localStorage.setItem("crew", JSON.stringify(crew));
+        }
+        if (!localStorage.getItem("inn"))
+        {
+            var inn = [];
+            localStorage.setItem("inn", JSON.stringify(inn));
         }
         document.getElementById("arrival").innerHTML = "You have arrived at " + localStorage.getItem("nextCity");
+        function updateInn() // generates crewmates for the inn
+        {
+            var inn = [];
+            var numAvailable = Math.floor(Math.random() * 6);
+
+            for (var i = 0; i < numAvailable; i++)
+            {
+                var names = ['Bill', 'Samuel', 'Pete', 'Louie', 'Sparrow', 'Jack', 'Vince', 'Gordon', 'Oscar', 'Wyatt', 'Edwin', 'Edward', 'Naoto', 'Goro', 'Jonas', 'Jacob', 'Wade', 'Randell'];
+                var name = names[Math.floor(Math.random()*names.length)] + " " + names[Math.floor(Math.random()*names.length)];
+                var fighting = Math.floor(Math.random()*101);
+                var piloting = Math.floor(Math.random()*101);
+                
+                var crewmate = {
+                    "name": name,
+                    "fighting": fighting,
+                    "piloting": piloting,
+                }
+
+                // inn[i] = "Crewmate " + (Math.floor(Math.random()*1000)+1);
+                inn[i] = crewmate;
+            }
+
+            localStorage.setItem("inn", JSON.stringify(inn));
+        }
+        
+        updateInn();
     </script>
 </html>

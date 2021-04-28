@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Pirates</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Home</a>
+                <div class="collapse navbar-collapse" id="menu">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="market.html" class="nav-link">Market</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="crew.html" class="nav-link">Crew</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="inventory.html" class="nav-link">Inventory</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="inn.html" class="nav-link">Inn</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="bank.html" class="nav-link">Bank</a>
+                        </li>
+                        <button type="button" class="btn btn-danger">Return to Ship</button>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="pt-3">
+                <h1>Captain,</h1>
+            </div>
+            <div class="pt-3">
+                <p class="lead">Available Crewmates:</p>
+                <ul class="lead" id="crewmate">
+                    <li class="list-group-item" id="crew-0">
+                        <button type="button" onclick = "recruit(2)" class="btn btn-primary" disabled>Recruit</button>
+                    </li>
+                    <li class="list-group-item" id="crew-1">
+                        <button type="button" onclick = "recruit(2)" class="btn btn-primary" disabled>Recruit</button>
+                    </li>
+                    <li class="list-group-item" id="crew-2">
+                        <button type="button" onclick = "recruit(3)" class="btn btn-primary" disabled>Recruit</button>
+                    </li>
+                    <li class="list-group-item" id="crew-3">
+                        <button type="button" onclick = "recruit(4)" class="btn btn-primary" disabled>Recruit</button>
+                    </li>
+                    <li class="list-group-item" id="crew-4">
+                        <button type="button" onclick = "recruit(5)" class="btn btn-primary" disabled>Recruit</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+    <script>
+        refreshInn();
+        function refreshInn()
+        {
+            var disabledButton = '<button type="button" class="btn btn-primary" disabled>Recruit</button>';
+            var enabledButton = '<button type="button" onclick = "recruit({number})" class="btn btn-primary mr-3">Recruit</button>'
+            var inn = JSON.parse(localStorage.getItem("inn"));
+            for (var i = 0; i < 5; i++) // replace all slots with disabled buttons
+            {
+                document.getElementById("crew-" + i).innerHTML = disabledButton;
+            }
+            for (var i = 0; i < inn.length; i++)
+            {
+                if (inn[i] != null)
+                    document.getElementById("crew-" + i).innerHTML = enabledButton.replace("{number}", i + "") + inn[i]["name"] + " (F:" + inn[i]["fighting"] + ", P: " + inn[i]["piloting"] + ")";
+            }
+        }
+        function recruit(number)
+        {
+            var inn = JSON.parse(localStorage.getItem("inn"));
+            var crew = JSON.parse(localStorage.getItem("crew"));
+            crew.push(inn[number]);
+            inn[number] = null;
+            localStorage.setItem("inn", JSON.stringify(inn));
+            localStorage.setItem("crew", JSON.stringify(crew));
+            
+            refreshInn();
+        }
+        
+    </script>
+</html>
