@@ -47,12 +47,28 @@
         updateCrew();
         function updateCrew()
         {
+            document.getElementById("crewmates").innerHTML = "";
             var crew = JSON.parse(localStorage.getItem("crew"));
-            var html = '<p class="lead">{name}</p>'
             for (var i = 0; i < crew.length; i++)
             {
-                document.getElementById("crewmates").innerHTML += html.replace("{name}", crew[i]["name"] + " (F:" + crew[i]["fighting"] + ", P: " + crew[i]["piloting"] + ")" );
+                var dismissButton = '<button type="button" onclick = "dismissCrewmate(' + crew[i]["crewmateId"] + ')" class="btn btn-danger mr-3">Dismiss</button>';
+                var name = crew[i]["name"] + " (F:" + crew[i]["fighting"] + ", P: " + crew[i]["piloting"] + ")";
+                
+                document.getElementById("crewmates").innerHTML += '<p class="lead">' + dismissButton + name + '</p>';
             }
+        }
+        function dismissCrewmate(crewmateId)
+        {
+            var crew = JSON.parse(localStorage.getItem("crew"));
+            for (var i = 0; i < crew.length; i++)
+            {
+                if (crew[i]["crewmateId"] == crewmateId);
+                    crew.splice(i, 1);
+            }
+            localStorage.setItem("crew", JSON.stringify(crew));
+            console.info("dismissed " + crewmateId);
+
+            updateCrew();
         }
     </script>
 </html>

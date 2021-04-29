@@ -90,6 +90,11 @@
             var crew = [];
             localStorage.setItem("crew", JSON.stringify(crew));
         }
+        if (!localStorage.getItem("crewmateId"))
+        {
+            var crewmateId = -1;
+            localStorage.setItem("crewmateId", JSON.stringify(crewmateId));
+        }
         if (!localStorage.getItem("inn"))
         {
             var inn = [];
@@ -107,11 +112,14 @@
                 var name = names[Math.floor(Math.random()*names.length)] + " " + names[Math.floor(Math.random()*names.length)];
                 var fighting = Math.floor(Math.random()*101);
                 var piloting = Math.floor(Math.random()*101);
+                var crewmateId = JSON.parse(localStorage.getItem("crewmateId")) + 1;
+                localStorage.setItem("crewmateId", JSON.stringify(crewmateId));
                 
                 var crewmate = {
                     "name": name,
                     "fighting": fighting,
                     "piloting": piloting,
+                    "crewmateId": crewmateId,
                 }
 
                 // inn[i] = "Crewmate " + (Math.floor(Math.random()*1000)+1);
