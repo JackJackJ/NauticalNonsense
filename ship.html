@@ -40,6 +40,7 @@
             <div class="pt-3">
                 <!-- Content starts here -->
                 <h1 id = "name"></h1>
+                <h1 id = 'test'></h1>
                 <!-- Content ends here -->
             </div>
             <div class="jumbotron">
@@ -64,7 +65,7 @@
                     <button type="button" onclick = "" class="btn btn-danger">Not my problem!</button>
                 </div>
                 <div id='disease' class=inner style='visibility: hidden'>
-                    <p>One of the pirates has come down with a strange cough.</p>
+                    <p id = 'disease-scenario'></p>
                     <button type="button" onclick = "" class="btn btn-primary">To the quarantine brig with ye!</button>
                     <button type="button" onclick = "" class="btn btn-primary">Germs are landlubber nonsense.</button>
                     <button type="button" onclick = "" class="btn btn-danger">To the plank with ye!</button>
@@ -74,7 +75,7 @@
                     <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
                     <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
                 </div>
-                <div id='merchant' class=inner style='visibility: hidden'>
+                <div id='stowaway' class=inner style='visibility: hidden'>
                     <p>I spy a juicy merchant vessel ahead! What's your call?</p>
                     <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
                     <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
@@ -85,17 +86,18 @@
     <script>
         var activeEvent = false;
         //mutiny();
-        randomEvent();
         document.getElementById("name").innerHTML = "Captain,";
         if(!localStorage.getItem("daysLeft") || localStorage.getItem("daysLeft") == 0)
         {
             localStorage.setItem("daysLeft", 10);
         }
         
+        randomEvent();
         
         document.getElementById("daysLeft").innerHTML = localStorage.getItem("daysLeft") + " days before arrival at " + localStorage.getItem("nextCity");
         function nextDay() //function to go forward a day
         {
+            
             if(activeEvent)
             {
                 alert("There are pressing matters at hand, captain!")
@@ -191,6 +193,12 @@
                     var specialEvents = ["newCrew", "disease", "opium", "stowaway"];
                     var whichOne = Math.floor(Math.random() * specialEvents.length);
                     node=document.getElementById(specialEvents[whichOne]);
+                    if(whichOne = "disease")
+                    {
+                        var crew = JSON.parse(localStorage.getItem("crew"));
+                        var num = Math.floor(Math.random()*crew.length);
+                        document.getElementById("disease-scenario").innerHTML = crew[num]["name"] + " has come down with a strange cough."
+                    }
                 }
             }
             else
