@@ -25,7 +25,7 @@
                         <li class="nav-item">
                             <a href="inventory.html" class="nav-link">Inventory</a>
                         </li>
-                        <button type="button" onclick = "nextDay()" class="btn btn-danger">Next Day</button>
+                        
                     </ul>
                 </div>
             </nav>
@@ -48,10 +48,10 @@
                 var dismissButton = '<button type="button" onclick = "dismissCrewmate(' + crew[i]["crewmateId"] + ')" class="btn btn-danger mr-3">Dismiss</button>';
                 var name = crew[i]["name"] + " (F:" + crew[i]["fighting"] + ", P: " + crew[i]["piloting"] + ")";
                 
-                document.getElementById("crewmates").innerHTML += '<p class="lead">' + dismissButton + name + '</p>';
+                document.getElementById("crewmates").innerHTML += '<p class="lead">' + name + '</p>';
             }
         }
-        function dismissCrewmate(crewmateId)
+        /*function dismissCrewmate(crewmateId)
         {
             var crew = JSON.parse(localStorage.getItem("crew"));
             for (var i = 0; i < crew.length; i++)
@@ -63,6 +63,6 @@
             console.info("dismissed " + crewmateId);
 
             updateCrew();
-        }
+        }*/
     </script>
 </html>
