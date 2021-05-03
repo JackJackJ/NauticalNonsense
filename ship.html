@@ -5,8 +5,14 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+        <script src="events.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
+    <style>
+        .inner{
+            position: absolute;
+        }
+    </style>
     <body>
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,6 +30,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="inventory.html" class="nav-link">Inventory</a>
+                        
                         </li>
                         <button type="button" onclick = "nextDay()" class="btn btn-danger">Next Day</button>
                     </ul>
@@ -37,15 +44,48 @@
             </div>
             <div class="jumbotron">
                 <h1 class="display-4" id = "daysLeft"></h1>
-                <div id='if-part' style='visibility: hidden;'></button></div>
-                <div id='else-part' style='visibility: hidden'>do nothing</div>
-              </div>
-              <div>
+                <!-- <div id='nothing' style='visibility: hidden'>A calm day at sea.</div> -->
+                
+                <div id='nothing' class=inner style='visibility: hidden'><p>A calm day at sea.</p></div>
+                <div id='pirates' class=inner style='visibility: hidden'>
+                    <p>An enemy pirate ship is upon us! What shall we do?</p>
+                    <button type="button" onclick = "" class="btn btn-danger">Fight!</button>
+                    <button type="button" onclick = "" class="btn btn-primary">Flee!</button>
+                </div>
+                <div id='merchant' class=inner style='visibility: hidden'>
+                    <p>I spy a merchant vessel full of money ahead! What's your call?</p>
+                    <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
+                    <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
+                </div>
+                <div id='newCrew' class=inner style='visibility: hidden'>
+                    <p>We've run aground a shipwreck. The survivors are begging to board our vessel.</p>
+                    <button type="button" onclick = "" class="btn btn-primary">Welcome aboard!</button>
+                    <button type="button" onclick = "" class="btn btn-primary">Take them prisoner.</button>
+                    <button type="button" onclick = "" class="btn btn-danger">Not my problem!</button>
+                </div>
+                <div id='disease' class=inner style='visibility: hidden'>
+                    <p>One of the pirates has come down with a strange cough.</p>
+                    <button type="button" onclick = "" class="btn btn-primary">To the quarantine brig with ye!</button>
+                    <button type="button" onclick = "" class="btn btn-primary">Germs are landlubber nonsense.</button>
+                    <button type="button" onclick = "" class="btn btn-danger">To the plank with ye!</button>
+                </div>
+                <div id='opium' class=inner style='visibility: hidden'>
+                    <p>I spy a juicy merchant vessel ahead! What's your call?</p>
+                    <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
+                    <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
+                </div>
+                <div id='merchant' class=inner style='visibility: hidden'>
+                    <p>I spy a juicy merchant vessel ahead! What's your call?</p>
+                    <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
+                    <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
+                </div>
               </div>
         </div>
     </body>
     <script>
         var activeEvent = false;
+        //mutiny();
+        randomEvent();
         document.getElementById("name").innerHTML = "Captain,";
         if(!localStorage.getItem("daysLeft") || localStorage.getItem("daysLeft") == 0)
         {
@@ -54,23 +94,35 @@
         
         
         document.getElementById("daysLeft").innerHTML = localStorage.getItem("daysLeft") + " days before arrival at " + localStorage.getItem("nextCity");
-        function nextDay()
+        function nextDay() //function to go forward a day
         {
             if(activeEvent)
+            {
+                alert("There are pressing matters at hand, captain!")
                 return;
-            randomEvent();
+            }
+            localStorage.setItem("morale", localStorage.getItem("morale")-1);
+            if(localStorage.getItem("morale") == 0)
+            {
+                mutiny();
+                return false;
+            }
             localStorage.setItem("daysLeft", localStorage.getItem("daysLeft")-1);
             updatePrices();
             if(localStorage.getItem("daysLeft") == 0)
-            {
-                updateInn();
                 window.location.href = "index.html";
-            }
             else
                 location.reload();
         }
-        function updatePrices()
+        function mutiny()
         {
+            window.location.href = "mutiny.html";
+            return false;
+        }
+        function updatePrices() //function that updates prices
+        {
+            
+            
             var prices = JSON.parse(localStorage.getItem("prices"));
             var keys = Object.keys(prices);
             for (var c = 0; c < keys.length; c++)
@@ -119,50 +171,33 @@
             }
             localStorage.setItem("prices", JSON.stringify(prices));
         }
-        function updateInn() // generates crewmates for the inn
-        {
-            var inn = [];
-            var numAvailable = Math.floor(Math.random() * 6);
-
-            for (var i = 0; i < numAvailable; i++)
-            {
-                var names = ['Bill', 'Samuel', 'Pete', 'Louie', 'Sparrow', 'Jack', 'Vince', 'Gordon', 'Oscar', 'Wyatt', 'Edwin', 'Edward', 'Naoto', 'Goro', 'Jonas', 'Jacob', 'Wade', 'Randell'];
-                var name = names[Math.floor(Math.random()*names.length)] + " " + names[Math.floor(Math.random()*names.length)];
-                var fighting = Math.floor(Math.random()*101);
-                var piloting = Math.floor(Math.random()*101);
-                var crewmateId = localStorage.getItem("crewmateId") + 1;
-                
-                var crewmate = {
-                    "name": name,
-                    "fighting": fighting,
-                    "piloting": piloting,
-                    "crewmateId": crewmateId,
-                }
-
-                // inn[i] = "Crewmate " + (Math.floor(Math.random()*1000)+1);
-                inn[i] = crewmate;
-            }
-
-            localStorage.setItem("inn", JSON.stringify(inn));
-        }
+        var node; 
         function randomEvent()
         {
             if (Math.random() >= 0.5) // an event occurs
             {
-
+                var chance = Math.random()
+                if(chance <= 0.1)
+                {
+                    node=document.getElementById('pirates');
+                }
+                //else if(chance <= 0.2)
+                else if(chance <= 0.2)
+                {
+                    node=document.getElementById('merchant');
+                }
+                else
+                {
+                    var specialEvents = ["newCrew", "disease", "opium", "stowaway"];
+                    var whichOne = Math.floor(Math.random() * specialEvents.length);
+                    node=document.getElementById(specialEvents[whichOne]);
+                }
             }
             else
             {
-
+                node = document.getElementById('nothing');
             }
+            node.style.visibility = 'visible';
         }
-        var node;
-        if(true) {
-            node = document.getElementById('if-part');
-        }
-        else {
-            node = document.getElementById('else-part');
-        }
-    node.style.visibility = 'visible';
     </script>
 </html>

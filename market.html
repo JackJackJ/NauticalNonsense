@@ -16,11 +16,11 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Port</a>
+                <a class="navbar-brand" href="index.html">Home</a>
                 <div class="collapse navbar-collapse" id="menu">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="market.html" class="nav-link active">Market</a>
+                            <a href="market.html" class="nav-link">Market</a>
                         </li>
                         <li class="nav-item">
                             <a href="landlubber_crew.html" class="nav-link">Crew</a>
@@ -174,6 +174,11 @@
             refreshBalance();
         }
         function sell(item) {
+            var morale = parseInt(localStorage.getItem("morale"));
+            var crew = JSON.parse(localStorage.getItem("crew"));
+            var numCrew = crew.length;
+            if(numCrew == 0)
+                numCrew = 1;
             var inventory = JSON.parse(localStorage.getItem("inventory"));
             var doubloons = parseInt(localStorage.getItem("doubloons"));
             var num;
@@ -194,13 +199,20 @@
             else
             {
                 inventory[item] -= 1;
+                morale += Math.ceil(prices[city][num] * .075/numCrew);
                 doubloons += Math.ceil(prices[city][num] * .85);
             }
             localStorage.setItem("inventory", JSON.stringify(inventory));
             localStorage.setItem("doubloons", doubloons);
+            localStorage.setItem("morale", morale);
             refreshBalance();
         }
         function sellAll(item) {
+            var morale = parseInt(localStorage.getItem("morale"));
+            var crew = JSON.parse(localStorage.getItem("crew"));
+            var numCrew = crew.length;
+            if(numCrew == 0)
+                numCrew = 1;
             var inventory = JSON.parse(localStorage.getItem("inventory"));
             var doubloons = parseInt(localStorage.getItem("doubloons"));
             var num;
@@ -220,11 +232,14 @@
                 return;
             else
             {
+                
                 doubloons += Math.ceil(prices[city][num] * inventory[item] * .85);
+                morale += Math.ceil(prices[city][num] * inventory[item] * .075/numCrew);
                 inventory[item] = 0;
             }
             localStorage.setItem("inventory", JSON.stringify(inventory));
             localStorage.setItem("doubloons", doubloons);
+            localStorage.setItem("morale", morale);
             refreshBalance();
         }
     </script>

@@ -61,6 +61,10 @@
         {
             localStorage.setItem("doubloons", 500);
         }
+        if(!localStorage.getItem("morale"))
+        {
+            localStorage.setItem("morale", 50);
+        }
         if(!localStorage.getItem("prices"))
         {
             var prices = {
@@ -88,12 +92,23 @@
         if (!localStorage.getItem("crew"))
         {
             var crew = [];
+            for (var i = 0; i < 5; i++)
+            {
+                var names = ['Bill', 'Samuel', 'Pete', 'Louie', 'Sparrow', 'Jack', 'Vince', 'Gordon', 'Oscar', 'Wyatt', 'Edwin', 'Edward', 'Naoto', 'Goro', 'Jonas', 'Jacob', 'Wade', 'Randell'];
+                var name = names[Math.floor(Math.random()*names.length)] + " " + names[Math.floor(Math.random()*names.length)];
+                var fighting = Math.floor(Math.random()*101);
+                var piloting = Math.floor(Math.random()*101);
+                
+                var crewmate = {
+                    "name": name,
+                    "fighting": fighting,
+                    "piloting": piloting,
+                }
+
+                // inn[i] = "Crewmate " + (Math.floor(Math.random()*1000)+1);
+                crew[i] = crewmate;
+            }
             localStorage.setItem("crew", JSON.stringify(crew));
-        }
-        if (!localStorage.getItem("crewmateId"))
-        {
-            var crewmateId = -1;
-            localStorage.setItem("crewmateId", JSON.stringify(crewmateId));
         }
         if (!localStorage.getItem("inn"))
         {
@@ -112,14 +127,11 @@
                 var name = names[Math.floor(Math.random()*names.length)] + " " + names[Math.floor(Math.random()*names.length)];
                 var fighting = Math.floor(Math.random()*101);
                 var piloting = Math.floor(Math.random()*101);
-                var crewmateId = JSON.parse(localStorage.getItem("crewmateId")) + 1;
-                localStorage.setItem("crewmateId", JSON.stringify(crewmateId));
                 
                 var crewmate = {
                     "name": name,
                     "fighting": fighting,
                     "piloting": piloting,
-                    "crewmateId": crewmateId,
                 }
 
                 // inn[i] = "Crewmate " + (Math.floor(Math.random()*1000)+1);
