@@ -72,8 +72,10 @@
                 </div>
                 <div id='opium' class=inner style='visibility: hidden'>
                     <p id = 'opium-scenario'></p>
-                    <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
+                    <button type="button" onclick = "" class="btn btn-primary">Toss it overboard!</button>
+                    <button type="button" onclick = "" class="btn btn-primary">Whatever makes them happy...</button>
+                    <button type="button" onclick = "" class="btn btn-primary">Mine now!</button>
+                    <button type="button" onclick = "" class="btn btn-danger">To the plank with ye!</button>
                 </div>
                 <div id='stowaway' class=inner style='visibility: hidden'>
                     <p>I spy a juicy merchant vessel ahead! What's your call?</p>
@@ -227,13 +229,22 @@
             node=document.getElementById(input);
             node.style.visibility = 'visible';
             if(input == "disease")
-                    {
-                        var crew = JSON.parse(localStorage.getItem("crew"));
-                        if(localStorage.getItem("position") == -1){
-                        localStorage.setItem("position", Math.floor(Math.random()*crew.length));
-                        }
-                        document.getElementById("disease-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has come down with a strange cough."
-                    }
+            {
+                var crew = JSON.parse(localStorage.getItem("crew"));
+                if(localStorage.getItem("position") == -1){
+                localStorage.setItem("position", Math.floor(Math.random()*crew.length));
+                }
+            document.getElementById("disease-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has come down with a strange cough."
+            }
+            if(input == "opium")
+            {
+                var crew = JSON.parse(localStorage.getItem("crew"));
+                if(localStorage.getItem("position") == -1){
+                localStorage.setItem("position", Math.floor(Math.random()*crew.length));
+                }
+            document.getElementById("disease-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has smuggled a pile of opium on board."
+            }
+        
         }
     </script>
 </html>

@@ -1,3 +1,12 @@
+function execute()
+{
+    localStorage.setItem("event", "passed");
+    activeEvent = false;
+    var crew = JSON.parse(localStorage.getItem("crew"));
+    crew.splice(localStorage.getItem("position"), 1);
+    localStorage.setItem("crew", JSON.stringify(crew));
+    localStorage.setItem("morale", localStorage.getItem("morale")-10);
+}
 function newCrew(action)
 {
     if(action == "welcome")
@@ -39,6 +48,7 @@ function disease(action)
         crew.splice(Math.floor(Math.random()*crew.length),1);
         crew.splice(Math.floor(Math.random()*crew.length),1);
         localStorage.setItem("crew", JSON.stringify(crew));
+        localStorage.setItem("morale", localStorage.getItem("morale")-5);
         document.getElementById('disease').innerHTML = "Your actions get the outbreak mostly under control, but some still perish of the disease.";
     }
     if(action == "denial")
@@ -52,15 +62,30 @@ function disease(action)
         crew.splice(Math.floor(Math.random()*crew.length),1);
         crew.splice(Math.floor(Math.random()*crew.length),1);
         localStorage.setItem("crew", JSON.stringify(crew));
+        localStorage.setItem("morale", localStorage.getItem("morale")-10);
         document.getElementById('disease').innerHTML = "The disease ravages the ship and leaves much of your crew dead. The survivors' faith in your leadership is greatly shaken.";
     }
     if(action == "plank")
     {
-        localStorage.setItem("event", "passed");
-        activeEvent = false;
-        var crew = JSON.parse(localStorage.getItem("crew"));
-        crew.splice(localStorage.getItem("position"), 1);
-        localStorage.setItem("crew", JSON.stringify(crew));
+        execute();
         document.getElementById('disease').innerHTML = "No man dares cough in your presence again.";
+    }
+}
+function opium(action)
+{
+    if(action == "overboard")
+    {
+        localStorage.setItem("morale", localStorage.getItem("morale")-1);
+        document.getElementById('opium').innerHTML = "Some of your men grumble. They ought to be grateful they aren't walking the plank.";
+    }
+    if(action == "libertarian")
+    {
+        localStorage.setItem("morale", localStorage.getItem("morale")-1);
+        for(i = 1; i < Math.ceil(Math.random()*3); i++)
+        {
+            var crew = JSON.parse(localStorage.getItem("crew"));
+            crew[Math.floor(Math.random()*crew.length)]["Fighting"] = crew[Math.floor(Math.random()*crew.length)]["Fighting"]
+        }
+
     }
 }
