@@ -86,6 +86,10 @@
             }
             localStorage.setItem("inventory", JSON.stringify(inventory));
         }
+        if (!localStorage.getItem("position"))
+        {
+            localStorage.setItem("position", -1);
+        }
         if (!localStorage.getItem("crew"))
         {
             var crew = [];

@@ -60,18 +60,18 @@
                 </div>
                 <div id='newCrew' class=inner style='visibility: hidden'>
                     <p>We've run aground a shipwreck. The survivors are begging to board our vessel.</p>
-                    <button type="button" onclick = "" class="btn btn-primary">Welcome aboard!</button>
+                    <button type="button" onclick = "newCrew('welcome')" class="btn btn-primary">Welcome aboard!</button>
                     <button type="button" onclick = "" class="btn btn-primary">Take them prisoner.</button>
-                    <button type="button" onclick = "" class="btn btn-danger">Not my problem!</button>
+                    <button type="button" onclick = "newCrew('abandon')" class="btn btn-danger">Not my problem!</button>
                 </div>
                 <div id='disease' class=inner style='visibility: hidden'>
                     <p id = 'disease-scenario'></p>
-                    <button type="button" onclick = "" class="btn btn-primary">To the quarantine brig with ye!</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Germs are landlubber nonsense.</button>
-                    <button type="button" onclick = "" class="btn btn-danger">To the plank with ye!</button>
+                    <button type="button" onclick = "disease('quarantine')" class="btn btn-primary">To the quarantine brig with ye!</button>
+                    <button type="button" onclick = "disease('denial')" class="btn btn-primary">Germs are landlubber nonsense.</button>
+                    <button type="button" onclick = "disease('plank')" class="btn btn-danger">To the plank with ye!</button>
                 </div>
                 <div id='opium' class=inner style='visibility: hidden'>
-                    <p>I spy a juicy merchant vessel ahead! What's your call?</p>
+                    <p id = 'opium-scenario'></p>
                     <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
                     <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
                 </div>
@@ -98,6 +98,8 @@
             randomEvent();
             printEvent(localStorage.getItem("event"));
         }
+        else if(localStorage.getItem("event") == "passed")
+        {}
         else{
             printEvent(localStorage.getItem("event"));
         }
@@ -118,6 +120,7 @@
                 return false;
             }
             localStorage.setItem("event", "false");
+            localStorage.setItem("position", -1);
             localStorage.setItem("daysLeft", localStorage.getItem("daysLeft")-1);
             updatePrices();
             if(localStorage.getItem("daysLeft") == 0)
@@ -185,6 +188,7 @@
         var last; 
         function randomEvent()
         {
+            activeEvent = true;
             if(localStorage.getItem("event") == "false")
             {
             if (Math.random() >= 0.5) // an event occurs
@@ -205,19 +209,14 @@
                     var whichOne = Math.floor(Math.random() * (specialEvents.length-1));
                     node=document.getElementById(specialEvents[whichOne]);
                     last = specialEvents[whichOne];
-                    if(whichOne = "disease")
-                    {
-                        var crew = JSON.parse(localStorage.getItem("crew"));
-                        var num = Math.floor(Math.random()*crew.length);
-                        document.getElementById("disease-scenario").innerHTML = crew[num]["name"] + " has come down with a strange cough."
-                    }
                 }
             }
-        }
             else
             {
                 last = 'nothing';
                 node = document.getElementById('nothing');
+                activeEvent = false;
+            }
             }
             
         localStorage.setItem("event", last);
@@ -227,6 +226,14 @@
             var node;
             node=document.getElementById(input);
             node.style.visibility = 'visible';
+            if(input == "disease")
+                    {
+                        var crew = JSON.parse(localStorage.getItem("crew"));
+                        if(localStorage.getItem("position") == -1){
+                        localStorage.setItem("position", Math.floor(Math.random()*crew.length));
+                        }
+                        document.getElementById("disease-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has come down with a strange cough."
+                    }
         }
     </script>
 </html>
