@@ -1,3 +1,8 @@
+function pirateSetup()
+{
+    generateEnemyShip();
+}
+
 function getCrew()
 {
     return JSON.parse(localStorage.getItem("crew"));
@@ -68,4 +73,18 @@ function escape(enemyPilotingStat)
         return true;
     }
     return false; // either player does not escape (player has to fight) or enemy escapes depending on the situation
+}
+
+function generateEnemyShip()
+{
+    var playerFighting = getPlayerFightingStat();
+
+    var strength = Math.random() * (0.2 - (-0.2)) + (-0.2);
+    var enemyFightingStat = playerFighting + (playerFighting * strength);
+    localStorage.setItem("enemyShip", JSON.stringify(enemyFightingStat));
+}
+
+function getEnemyFightingStat()
+{
+    return JSON.parse(localStorage.getItem("enemyship"));
 }

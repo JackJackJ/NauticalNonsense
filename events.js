@@ -64,3 +64,17 @@ function disease(action)
         document.getElementById('disease').innerHTML = "No man dares cough in your presence again.";
     }
 }
+
+function enemyShip(action)
+{
+    if (action == "fight")
+    {
+        localStorage.setItem("event", "passed");
+        activeEvent = false;
+        // document.getElementById('pirates').innerHTML = "Are you sure you want to fight? Your fighting stat"
+    }
+    if (action == "flee")
+    {
+        return;
+    }
+}
