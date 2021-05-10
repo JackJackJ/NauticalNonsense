@@ -85,14 +85,22 @@
     </body>
     <script>
         var activeEvent = false;
+        if(!localStorage.getItem("event"))
+            localStorage.setItem("event", "false")
         //mutiny();
         document.getElementById("name").innerHTML = "Captain,";
         if(!localStorage.getItem("daysLeft") || localStorage.getItem("daysLeft") == 0)
         {
             localStorage.setItem("daysLeft", 10);
         }
-        
-        randomEvent();
+        if(localStorage.getItem("event")=="false")
+        {
+            randomEvent();
+            printEvent(localStorage.getItem("event"));
+        }
+        else{
+            printEvent(localStorage.getItem("event"));
+        }
         
         document.getElementById("daysLeft").innerHTML = localStorage.getItem("daysLeft") + " days before arrival at " + localStorage.getItem("nextCity");
         function nextDay() //function to go forward a day
@@ -109,6 +117,7 @@
                 mutiny();
                 return false;
             }
+            localStorage.setItem("event", "false");
             localStorage.setItem("daysLeft", localStorage.getItem("daysLeft")-1);
             updatePrices();
             if(localStorage.getItem("daysLeft") == 0)
@@ -173,26 +182,29 @@
             }
             localStorage.setItem("prices", JSON.stringify(prices));
         }
-        var node; 
+        var last; 
         function randomEvent()
         {
+            if(localStorage.getItem("event") == "false")
+            {
             if (Math.random() >= 0.5) // an event occurs
             {
                 var chance = Math.random()
                 if(chance <= 0.1)
                 {
-                    node=document.getElementById('pirates');
+                    last = 'pirates';
                 }
                 //else if(chance <= 0.2)
                 else if(chance <= 0.2)
                 {
-                    node=document.getElementById('merchant');
+                    last = 'merchant';
                 }
                 else
                 {
                     var specialEvents = ["newCrew", "disease", "opium", "stowaway"];
-                    var whichOne = Math.floor(Math.random() * specialEvents.length);
+                    var whichOne = Math.floor(Math.random() * (specialEvents.length-1));
                     node=document.getElementById(specialEvents[whichOne]);
+                    last = specialEvents[whichOne];
                     if(whichOne = "disease")
                     {
                         var crew = JSON.parse(localStorage.getItem("crew"));
@@ -201,10 +213,19 @@
                     }
                 }
             }
+        }
             else
             {
+                last = 'nothing';
                 node = document.getElementById('nothing');
             }
+            
+        localStorage.setItem("event", last);
+        }
+        function printEvent(input)
+        {
+            var node;
+            node=document.getElementById(input);
             node.style.visibility = 'visible';
         }
     </script>
