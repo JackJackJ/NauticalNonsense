@@ -75,17 +75,20 @@ function opium(action)
 {
     if(action == "overboard")
     {
+        localStorage.setItem("event", "passed");
         localStorage.setItem("morale", localStorage.getItem("morale")-1);
         document.getElementById('opium').innerHTML = "Some of your men grumble. They ought to be grateful they aren't walking the plank.";
     }
     if(action == "libertarian")
     {
-        localStorage.setItem("morale", localStorage.getItem("morale")-1);
+        localStorage.setItem("morale", localStorage.getItem("morale")+10);
         for(i = 1; i < Math.ceil(Math.random()*3); i++)
         {
+            localStorage.setItem("event", "passed");
             var crew = JSON.parse(localStorage.getItem("crew"));
-            crew[Math.floor(Math.random()*crew.length)]["Fighting"] = crew[Math.floor(Math.random()*crew.length)]["Fighting"]
-        }
-
+            crew[Math.floor(Math.random()*crew.length)]["fighting"] = crew[Math.floor(Math.random()*crew.length)]["fighting"]*.5;
+            crew[Math.floor(Math.random()*crew.length)]["piloting"] = crew[Math.floor(Math.random()*crew.length)]["piloting"]*.5;
+        } 
+        document.getElementById('opium').innerHTML = "A good deal of your men wind up getting hooked on opium. While the addicts are substantially worse at being pirates, they are at least easier to order around";
     }
 }
