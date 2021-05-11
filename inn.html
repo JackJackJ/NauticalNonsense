@@ -75,12 +75,15 @@
                 {
                     document.getElementById("crew-" + i).innerHTML = disabledButton;
                 }
-            }   
+            }
+            if(crew.length < 15)
+            {  
             for (var i = 0; i < inn.length; i++)
             {
                 if (inn[i] != null)
                     document.getElementById("crew-" + i).innerHTML = enabledButton.replace("{number}", i + "") + inn[i]["name"] + " (F:" + inn[i]["fighting"] + ", P: " + inn[i]["piloting"] + ")";
             }
+        }
         }
         function recruit(number)
         {
