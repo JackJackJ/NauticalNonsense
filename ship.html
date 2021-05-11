@@ -49,12 +49,12 @@
                 
                 <div id='nothing' class=inner style='visibility: hidden'><p>A calm day at sea.</p></div>
                 <div id='pirates' class=inner style='visibility: hidden'>
-                    <p>An enemy pirate ship is upon us! What shall we do?</p>
-                    <button type="button" onclick = "" class="btn btn-danger">Fight!</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Flee!</button>
+                    <p id = 'pirate-scenario'></p>
+                    <button type="button" onclick = "pirates('fight', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-danger">Fight!</button>
+                    <button type="button" onclick = "pirates('flee', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-primary">Flee!</button>
                 </div>
                 <div id='merchant' class=inner style='visibility: hidden'>
-                    <p>I spy a merchant vessel full of money ahead! What's your call?</p>
+                    <p id = 'merchant-scenario'></p>
                     <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
                     <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
                 </div>
@@ -74,8 +74,8 @@
                     <p id = 'opium-scenario'></p>
                     <button type="button" onclick = "opium('overboard')" class="btn btn-primary">Toss it overboard!</button>
                     <button type="button" onclick = "opium('libertarian')" class="btn btn-primary">Whatever makes them happy...</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Mine now!</button>
-                    <button type="button" onclick = "" class="btn btn-danger">To the plank with ye!</button>
+                    <button type="button" onclick = "opium('confiscate')" class="btn btn-primary">Mine now!</button>
+                    <button type="button" onclick = "opium('plank')" class="btn btn-danger">To the plank with ye!</button>
                 </div>
                 <div id='stowaway' class=inner style='visibility: hidden'>
                     <p>I spy a juicy merchant vessel ahead! What's your call?</p>
@@ -94,6 +94,14 @@
         if(!localStorage.getItem("daysLeft") || localStorage.getItem("daysLeft") == 0)
         {
             localStorage.setItem("daysLeft", 10);
+        }
+        if(!localStorage.getItem("enemyFighting"))
+        {
+            localStorage.setItem("enemyFighting",0);
+        }
+        if(!localStorage.getItem("enemySailing"))
+        {
+            localStorage.setItem("enemySailing", 0);
         }
         if(localStorage.getItem("event")=="false")
         {
@@ -123,6 +131,8 @@
             }
             localStorage.setItem("event", "false");
             localStorage.setItem("position", -1);
+            localStorage.setItem("enemyFighting", -1);
+            localStorage.setItem("enemySailing", -1);
             localStorage.setItem("daysLeft", localStorage.getItem("daysLeft")-1);
             updatePrices();
             if(localStorage.getItem("daysLeft") == 0)
@@ -228,6 +238,26 @@
             var node;
             node=document.getElementById(input);
             node.style.visibility = 'visible';
+            if(input == "merchant")
+            {
+                if(localStorage.getItem("enemySailing") == -1)
+                {
+                    localStorage.setItem("enemyFighting", Math.floor(Math.random() * 1501)); 
+                }
+                document.getElementById("merchant-scenario").innerHTML = "I see a merchant ship full of doubloons! We have a " + 
+                (getChance(getPlayerPilotingStat(), parseInt(localStorage.getItem("enemySailing"))) * 100).toFixed(2) + "% chance of catching up to them.";
+            }
+            if(input == "pirates")
+            {
+                if(localStorage.getItem("enemySailing") == -1)
+                {
+                    localStorage.setItem("enemyFighting", Math.floor(Math.random() * 1501)); 
+                    localStorage.setItem("enemySailing", Math.floor(Math.random() * 1501)); 
+                }
+                document.getElementById("pirate-scenario").innerHTML = "An enemy pirate ship is chasing us! We have a " + 
+                (getChance(getPlayerFightingStat(), parseInt(localStorage.getItem("enemyFighting"))) * 100).toFixed(2) + "% chance of winning the battle and a " +
+                (getChance(getPlayerPilotingStat(), parseInt(localStorage.getItem("enemySailing"))) * 100).toFixed(2) + "% chance of fleeing.";
+            }
             if(input == "disease")
             {
                 var crew = JSON.parse(localStorage.getItem("crew"));
