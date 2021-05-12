@@ -174,6 +174,24 @@ function merchant(action, enemySailing)
         document.getElementById('pirates').innerHTML = "We'll let em go.";
     }
 }
+function merchant(action, enemySailing)
+{
+    if(action == "attack")
+    {
+        if(escape(enemySailing))
+        {
+            alert("Yohoho! No one outsails you.")
+        }
+        else
+        {
+            alert("Drat! They got away.")
+        }
+    }
+    else
+    {
+        alert("The merchants see another day.")
+    }
+}
 function getCrew()
 {
     return JSON.parse(localStorage.getItem("crew"));
@@ -250,4 +268,18 @@ function escape(enemyPilotingStat)
         return true;
     }
     return false; // either player does not escape (player has to fight) or enemy escapes depending on the situation
+}
+
+function enemyShip(action)
+{
+    if (action == "fight")
+    {
+        localStorage.setItem("event", "passed");
+        activeEvent = false;
+        // document.getElementById('pirates').innerHTML = "Are you sure you want to fight? Your fighting stat"
+    }
+    if (action == "flee")
+    {
+        return;
+    }
 }
