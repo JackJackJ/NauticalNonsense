@@ -208,3 +208,17 @@ function escape(enemyPilotingStat)
     }
     return false; // either player does not escape (player has to fight) or enemy escapes depending on the situation
 }
+
+function enemyShip(action)
+{
+    if (action == "fight")
+    {
+        localStorage.setItem("event", "passed");
+        activeEvent = false;
+        // document.getElementById('pirates').innerHTML = "Are you sure you want to fight? Your fighting stat"
+    }
+    if (action == "flee")
+    {
+        return;
+    }
+}

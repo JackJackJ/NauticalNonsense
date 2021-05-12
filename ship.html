@@ -6,6 +6,7 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
         <script src="events.js"></script>
+        <script src="fighting.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <style>
@@ -52,6 +53,9 @@
                     <p id = 'pirate-scenario'></p>
                     <button type="button" onclick = "pirates('fight', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-danger">Fight!</button>
                     <button type="button" onclick = "pirates('flee', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-primary">Flee!</button>
+<!--                     <p id='pirates-scenario'>An enemy pirate ship is upon us! What shall we do?</p>
+                    <button type="button" onclick = "enemyShip('fight')" class="btn btn-danger">Fight!</button>
+                    <button type="button" onclick = "enemyShip('flee')" class="btn btn-primary">Flee!</button> -->
                 </div>
                 <div id='merchant' class=inner style='visibility: hidden'>
                     <p id = 'merchant-scenario'></p>
@@ -209,6 +213,7 @@
                 if(chance <= 0.1)
                 {
                     last = 'pirates';
+                    pirateSetup(); // in fighting.js
                 }
                 //else if(chance <= 0.2)
                 else if(chance <= 0.2)
@@ -217,7 +222,7 @@
                 }
                 else
                 {
-                    var specialEvents = ["newCrew", "disease", "opium", "stowaway"];
+                    var specialEvents = ["newCrew", "disease", "opium", "stowaway", "pirates"];
                     var whichOne = Math.floor(Math.random() * (specialEvents.length-1));
                     node=document.getElementById(specialEvents[whichOne]);
                     last = specialEvents[whichOne];
@@ -275,6 +280,13 @@
             document.getElementById("opium-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has smuggled a pile of opium on board."
             }
         
+//             if (input == 'pirates')
+//             {
+//                 var playerFighting = getPlayerFightingStat(); // in fighting.js
+//                 var enemyFighting = getEnemyFightingStat(); // in fighting.js
+//                 console.info(playerFighting + " vs " + enemyFighting);
+//             }
+//             console.info("event: " + input);
         }
     </script>
 </html>

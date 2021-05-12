@@ -28,10 +28,7 @@
                         <li class="nav-item">
                             <a href="inn.html" class="nav-link">Inn</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="bank.html" class="nav-link">Bank</a>
-                        </li>
-                        <button type="button" class="btn btn-danger">Return to Ship</button>
+                        <a class="btn btn-danger" href="navigation.html" role="button">Return to Ship</a>
                     </ul>
                 </div>
             </nav>
@@ -52,22 +49,18 @@
             var crew = JSON.parse(localStorage.getItem("crew"));
             for (var i = 0; i < crew.length; i++)
             {
-                var dismissButton = '<button type="button" onclick = "dismissCrewmate(' + crew[i]["crewmateId"] + ')" class="btn btn-danger mr-3">Dismiss</button>';
-                var name = crew[i]["name"] + " (Fighting: " + crew[i]["fighting"] + ", Sailing: " + crew[i]["piloting"] + ")";
-                
+                var dismissButton = '<button type="button" onclick = "dismissCrewmate(' + i + ')" class="btn btn-danger mr-3">Dismiss</button>';
+                var name = crew[i]["name"] + " (F:" + crew[i]["fighting"] + ", P: " + crew[i]["piloting"] + ")";
+
                 document.getElementById("crewmates").innerHTML += '<p class="lead">' + dismissButton + name + '</p>';
             }
         }
-        function dismissCrewmate(crewmateId)
+        function dismissCrewmate(index)
         {
             var crew = JSON.parse(localStorage.getItem("crew"));
-            for (var i = 0; i < crew.length; i++)
-            {
-                if (crew[i]["crewmateId"] == crewmateId);
-                    crew.splice(i, 1);
-            }
+            console.info("dismissed " + crew[index]["name"]);
+            crew.splice(index, 1);
             localStorage.setItem("crew", JSON.stringify(crew));
-            console.info("dismissed " + crewmateId);
 
             updateCrew();
         }
