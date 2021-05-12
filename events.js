@@ -123,12 +123,48 @@ function pirates(action, enemyFighting, enemySailing)
     {
         if(battle(enemyFighting))
         {
-            alert("you win!")
+            alert("Arrrgh! You vanquish those scalawags.")
         }
         else
         {
-            alert("you lose!")
+            alert("Avast! Ye were vanquished.")
         }
+    }
+    if(action == "flee")
+    {
+        if(escape(enemySailing))
+        {
+            alert("Those scalawags can't keep up! Their ship fades into the horizon.")
+        }
+        else
+        {
+            if(battle(enemyFighting))
+            {
+                alert("Arrrgh! Your attempt to flee was unsuccessful but ye vanquished those scalawags anyways.")
+            }
+            else
+            {
+                alert("Avast! Your attempt to flee was unsuccessful and ye were vanquished.")
+            }
+        }
+    }
+}
+function merchant(action, enemySailing)
+{
+    if(action == "attack")
+    {
+        if(escape(enemySailing))
+        {
+            alert("Yohoho! No one outsails you.")
+        }
+        else
+        {
+            alert("Drat! They got away.")
+        }
+    }
+    else
+    {
+        alert("The merchants see another day.")
     }
 }
 function getCrew()
