@@ -101,7 +101,7 @@ function opium(action)
         activeEvent = false;
         localStorage.setItem("morale", parseInt(localStorage.getItem("morale"))-3);
         var inventory = JSON.parse(localStorage.getItem("inventory"));
-        inventory["Opium"] = inventory["Opium"] + Math.ceil(Math.random()*10);
+        inventory["Opium"] = inventory["Opium"] + Math.ceil(Math.random()*5);
         localStorage.setItem("inventory", JSON.stringify(inventory));
         document.getElementById('opium').innerHTML = "Much to your mens' dismay, you confiscate the opium. It ought to fetch a good profit at the next port.";
     }
@@ -121,14 +121,57 @@ function pirates(action, enemyFighting, enemySailing)
 {
     if(action == "fight")
     {
-        if(battle(enemyFighting))
+        if(battle(parseInt(enemyFighting)))
         {
-            alert("you win!")
+            localStorage.setItem("event", "passed");
+            activeEvent = false;
+            document.getElementById('pirates').innerHTML = "You have triumphed, captain! You ransack the enemy ship for a heap of doubloons and resources.";
         }
         else
         {
-            alert("you lose!")
+            localStorage.setItem("event", "passed");
+            activeEvent = false;
+            document.getElementById('pirates').innerHTML = "Avast! Ye crew is defeated.";
         }
+    }
+    if(action == "flee")
+    {
+        if(escape(parseInt(enemySailing)))
+        {
+            localStorage.setItem("event", "passed");
+            activeEvent = false;
+            document.getElementById('pirates').innerHTML = "Arrrgh! The scalawags' ship disappears into the horizon.";
+        }
+        else
+        {
+            localStorage.setItem("event", "passed");
+            activeEvent = false;
+            document.getElementById('pirates').innerHTML = "Avast! They've caught up with us.";
+        }
+    }
+}
+function merchant(action, enemySailing)
+{
+    if(action == "chase")
+    {
+        if(escape(parseInt(enemySailing)))
+        {
+            localStorage.setItem("event", "passed");
+            activeEvent = false;
+            document.getElementById('merchant').innerHTML = "Yo-ho-ho! No one outruns you, Captain.";
+        }
+        else
+        {
+            localStorage.setItem("event", "passed");
+            activeEvent = false;
+            document.getElementById('pirates').innerHTML = "Drat! We lost them.";
+        }
+    }
+    if(action == "mercy")
+    {
+        localStorage.setItem("event", "passed");
+        activeEvent = false;
+        document.getElementById('pirates').innerHTML = "We'll let em go.";
     }
 }
 function getCrew()
