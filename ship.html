@@ -50,20 +50,23 @@
                 
                 <div id='nothing' class=inner style='visibility: hidden'><p>A calm day at sea.</p></div>
                 <div id='pirates' class=inner style='visibility: hidden'>
-                    <p id='pirates-scenario'>An enemy pirate ship is upon us! What shall we do?</p>
+                    <p id = 'pirate-scenario'></p>
+                    <button type="button" onclick = "pirates('fight', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-danger">Fight!</button>
+                    <button type="button" onclick = "pirates('flee', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-primary">Flee!</button>
+<!--                     <p id='pirates-scenario'>An enemy pirate ship is upon us! What shall we do?</p>
                     <button type="button" onclick = "enemyShip('fight')" class="btn btn-danger">Fight!</button>
-                    <button type="button" onclick = "enemyShip('flee')" class="btn btn-primary">Flee!</button>
+                    <button type="button" onclick = "enemyShip('flee')" class="btn btn-primary">Flee!</button> -->
                 </div>
                 <div id='merchant' class=inner style='visibility: hidden'>
-                    <p>I spy a merchant vessel full of money ahead! What's your call?</p>
+                    <p id = 'merchant-scenario'></p>
                     <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
                     <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
                 </div>
                 <div id='newCrew' class=inner style='visibility: hidden'>
                     <p>We've run aground a shipwreck. The survivors are begging to board our vessel.</p>
-                    <button type="button" onclick = "" class="btn btn-primary">Welcome aboard!</button>
+                    <button type="button" onclick = "newCrew('welcome')" class="btn btn-primary">Welcome aboard!</button>
                     <button type="button" onclick = "" class="btn btn-primary">Take them prisoner.</button>
-                    <button type="button" onclick = "" class="btn btn-danger">Not my problem!</button>
+                    <button type="button" onclick = "newCrew('abandon')" class="btn btn-danger">Not my problem!</button>
                 </div>
                 <div id='disease' class=inner style='visibility: hidden'>
                     <p id = 'disease-scenario'></p>
@@ -72,9 +75,11 @@
                     <button type="button" onclick = "disease('plank')" class="btn btn-danger">To the plank with ye!</button>
                 </div>
                 <div id='opium' class=inner style='visibility: hidden'>
-                    <p>I spy a juicy merchant vessel ahead! What's your call?</p>
-                    <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
+                    <p id = 'opium-scenario'></p>
+                    <button type="button" onclick = "opium('overboard')" class="btn btn-primary">Toss it overboard!</button>
+                    <button type="button" onclick = "opium('libertarian')" class="btn btn-primary">Whatever makes them happy...</button>
+                    <button type="button" onclick = "opium('confiscate')" class="btn btn-primary">Mine now!</button>
+                    <button type="button" onclick = "opium('plank')" class="btn btn-danger">To the plank with ye!</button>
                 </div>
                 <div id='stowaway' class=inner style='visibility: hidden'>
                     <p>I spy a juicy merchant vessel ahead! What's your call?</p>
@@ -93,6 +98,14 @@
         if(!localStorage.getItem("daysLeft") || localStorage.getItem("daysLeft") == 0)
         {
             localStorage.setItem("daysLeft", 10);
+        }
+        if(!localStorage.getItem("enemyFighting"))
+        {
+            localStorage.setItem("enemyFighting",0);
+        }
+        if(!localStorage.getItem("enemySailing"))
+        {
+            localStorage.setItem("enemySailing", 0);
         }
         if(localStorage.getItem("event")=="false")
         {
@@ -122,6 +135,8 @@
             }
             localStorage.setItem("event", "false");
             localStorage.setItem("position", -1);
+            localStorage.setItem("enemyFighting", -1);
+            localStorage.setItem("enemySailing", -1);
             localStorage.setItem("daysLeft", localStorage.getItem("daysLeft")-1);
             updatePrices();
             if(localStorage.getItem("daysLeft") == 0)
@@ -228,21 +243,50 @@
             var node;
             node=document.getElementById(input);
             node.style.visibility = 'visible';
-            if(input == "disease")
-                    {
-                        var crew = JSON.parse(localStorage.getItem("crew"));
-                        if(localStorage.getItem("position") == -1){
-                        localStorage.setItem("position", Math.floor(Math.random()*crew.length));
-                        }
-                        document.getElementById("disease-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has come down with a strange cough."
-                    }
-            if (input == 'pirates')
+            if(input == "merchant")
             {
-                var playerFighting = getPlayerFightingStat(); // in fighting.js
-                var enemyFighting = getEnemyFightingStat(); // in fighting.js
-                console.info(playerFighting + " vs " + enemyFighting);
+                if(localStorage.getItem("enemySailing") == -1)
+                {
+                    localStorage.setItem("enemyFighting", Math.floor(Math.random() * 1501)); 
+                }
+                document.getElementById("merchant-scenario").innerHTML = "I see a merchant ship full of doubloons! We have a " + 
+                (getChance(getPlayerPilotingStat(), parseInt(localStorage.getItem("enemySailing"))) * 100).toFixed(2) + "% chance of catching up to them.";
             }
-            console.info("event: " + input);
+            if(input == "pirates")
+            {
+                if(localStorage.getItem("enemySailing") == -1)
+                {
+                    localStorage.setItem("enemyFighting", Math.floor(Math.random() * 1501)); 
+                    localStorage.setItem("enemySailing", Math.floor(Math.random() * 1501)); 
+                }
+                document.getElementById("pirate-scenario").innerHTML = "An enemy pirate ship is chasing us! We have a " + 
+                (getChance(getPlayerFightingStat(), parseInt(localStorage.getItem("enemyFighting"))) * 100).toFixed(2) + "% chance of winning the battle and a " +
+                (getChance(getPlayerPilotingStat(), parseInt(localStorage.getItem("enemySailing"))) * 100).toFixed(2) + "% chance of fleeing.";
+            }
+            if(input == "disease")
+            {
+                var crew = JSON.parse(localStorage.getItem("crew"));
+                if(localStorage.getItem("position") == -1){
+                localStorage.setItem("position", Math.floor(Math.random()*crew.length));
+                }
+            document.getElementById("disease-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has come down with a strange cough."
+            }
+            if(input == "opium")
+            {
+                var crew = JSON.parse(localStorage.getItem("crew"));
+                if(localStorage.getItem("position") == -1){
+                localStorage.setItem("position", Math.floor(Math.random()*crew.length));
+                }
+            document.getElementById("opium-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has smuggled a pile of opium on board."
+            }
+        
+//             if (input == 'pirates')
+//             {
+//                 var playerFighting = getPlayerFightingStat(); // in fighting.js
+//                 var enemyFighting = getEnemyFightingStat(); // in fighting.js
+//                 console.info(playerFighting + " vs " + enemyFighting);
+//             }
+//             console.info("event: " + input);
         }
     </script>
 </html>

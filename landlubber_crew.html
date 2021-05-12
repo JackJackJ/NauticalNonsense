@@ -39,6 +39,7 @@
             </div>
             <div id="crewmates" class="pt-3">
         </div>
+        <div id="morale" class="pt-3"></div>
     </body>
     <script>
         updateCrew();
@@ -50,7 +51,7 @@
             {
                 var dismissButton = '<button type="button" onclick = "dismissCrewmate(' + i + ')" class="btn btn-danger mr-3">Dismiss</button>';
                 var name = crew[i]["name"] + " (F:" + crew[i]["fighting"] + ", P: " + crew[i]["piloting"] + ")";
-                
+
                 document.getElementById("crewmates").innerHTML += '<p class="lead">' + dismissButton + name + '</p>';
             }
         }
@@ -63,5 +64,6 @@
 
             updateCrew();
         }
+        document.getElementById("morale").innerHTML = "Morale: " + localStorage.getItem("morale");
     </script>
 </html>

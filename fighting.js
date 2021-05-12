@@ -44,6 +44,12 @@ function getPlayerPilotingStat() // adds the fighting stats of all of the player
 * Chance of winning is based on the fighting stat of the player and the enemy
 * Returns true if player wins the battle, false otherwise
 */
+
+function getChance(playerStat, enemyStat)
+{
+    return playerStat/(playerStat+enemyStat);
+}
+
 function battle(enemyFightingStat)
 {
     var playerFightingStat = getPlayerFightingStat();
