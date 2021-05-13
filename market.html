@@ -31,7 +31,7 @@
                         <li class="nav-item">
                             <a href="inn.html" class="nav-link">Inn</a>
                         </li>
-                        <a class="btn btn-danger" href="navigation.html" role="button">Return to Ship</a>
+                        <a class="btn btn-danger" onclick="returnToShip()" role="button">Return to Ship</a>
                     </ul>
                 </div>
             </nav>
@@ -238,6 +238,19 @@
             localStorage.setItem("doubloons", doubloons);
             localStorage.setItem("morale", morale);
             refreshBalance();
+        }
+        function returnToShip()
+        {
+            if(JSON.parse(localStorage.getItem("crew")).length <= 15)
+            {
+                window.location.href = "navigation.html";
+                return false;
+            }
+            else
+            {
+                alert("Yer ship is overcrowded, captain! Dismiss some men to get back to sailing.");
+                return;
+            }
         }
     </script>
 </html>
