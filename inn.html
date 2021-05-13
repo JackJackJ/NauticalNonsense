@@ -96,6 +96,18 @@
             refreshInn();
             document.getElementById("doubloons").innerHTML = "Doubloons: " + localStorage.getItem("doubloons");
         }
-        
+        function returnToShip()
+        {
+            if(JSON.parse(localStorage.getItem("crew")).length <= 15)
+            {
+                window.location.href = "navigation.html";
+                return false;
+            }
+            else
+            {
+                alert("Yer ship is overcrowded, captain! Dismiss some men to get back to sailing.");
+                return;
+            }
+        }
     </script>
 </html>
