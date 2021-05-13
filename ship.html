@@ -124,7 +124,7 @@
                 alert("There are pressing matters at hand, captain!")
                 return;
             }
-            localStorage.setItem("morale", localStorage.getItem("morale")-2);
+            localStorage.setItem("morale", localStorage.getItem("morale")-1);
             if(localStorage.getItem("morale") <= 0)
             {
                 mutiny();
