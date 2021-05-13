@@ -28,7 +28,7 @@
                         <li class="nav-item">
                             <a href="inn.html" class="nav-link">Inn</a>
                         </li>
-                        <a class="btn btn-danger" href="navigation.html" role="button">Return to Ship</a>
+                        <a class="btn btn-danger" onclick="returnToShip()" role="button">Return to Ship</a>
                     </ul>
                 </div>
             </nav>
@@ -36,12 +36,15 @@
             <div class="pt-3">
                 <h1>Captain,</h1>
                 <h2>Your crew...</h2>
+                <p id = "roster"></p>
             </div>
             <div id="crewmates" class="pt-3">
         </div>
+        <div id="morale" class="pt-3"></div>
     </body>
     <script>
         updateCrew();
+        document.getElementById("roster").innerHTML = JSON.parse(localStorage.getItem("crew")).length + "/15 Crew Members";
         function updateCrew()
         {
             document.getElementById("crewmates").innerHTML = "";
@@ -49,10 +52,11 @@
             for (var i = 0; i < crew.length; i++)
             {
                 var dismissButton = '<button type="button" onclick = "dismissCrewmate(' + i + ')" class="btn btn-danger mr-3">Dismiss</button>';
-                var name = crew[i]["name"] + " (F:" + crew[i]["fighting"] + ", P: " + crew[i]["piloting"] + ")";
-                
+                var name = crew[i]["name"] + " (Fighting:" + crew[i]["fighting"] + ", Sailing: " + crew[i]["piloting"] + ")";
+
                 document.getElementById("crewmates").innerHTML += '<p class="lead">' + dismissButton + name + '</p>';
             }
+            
         }
         function dismissCrewmate(index)
         {
@@ -60,8 +64,23 @@
             console.info("dismissed " + crew[index]["name"]);
             crew.splice(index, 1);
             localStorage.setItem("crew", JSON.stringify(crew));
-
+            document.getElementById("roster").inner
+            HTML = JSON.parse(localStorage.getItem("crew")).length + "/15 Crew Members";
             updateCrew();
         }
+        function returnToShip()
+        {
+            if(JSON.parse(localStorage.getItem("crew")).length <= 15)
+            {
+                window.location.href = "navigation.html";
+                return false;
+            }
+            else
+            {
+                alert("Yer ship is overcrowded, captain! Dismiss some men to get back to sailing.");
+                return;
+            }
+        }
+        document.getElementById("morale").innerHTML = "Morale: " + localStorage.getItem("morale");
     </script>
 </html>

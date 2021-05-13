@@ -49,14 +49,14 @@
                 
                 <div id='nothing' class=inner style='visibility: hidden'><p>A calm day at sea.</p></div>
                 <div id='pirates' class=inner style='visibility: hidden'>
-                    <p>An enemy pirate ship is upon us! What shall we do?</p>
-                    <button type="button" onclick = "" class="btn btn-danger">Fight!</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Flee!</button>
+                    <p id = 'pirate-scenario'></p>
+                    <button type="button" onclick = "pirates('fight', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-danger">Fight!</button>
+                    <button type="button" onclick = "pirates('flee', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-primary">Flee!</button>
                 </div>
                 <div id='merchant' class=inner style='visibility: hidden'>
-                    <p>I spy a merchant vessel full of money ahead! What's your call?</p>
-                    <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
+                    <p id = 'merchant-scenario'></p>
+                    <button type="button" onclick = "merchant('chase', localStorage.getItem('enemySailing'))" class="btn btn-danger">Go after it!</button>
+                    <button type="button" onclick = "merchant('mercy')" class="btn btn-primary">Leave them be.</button>
                 </div>
                 <div id='newCrew' class=inner style='visibility: hidden'>
                     <p>We've run aground a shipwreck. The survivors are begging to board our vessel.</p>
@@ -72,15 +72,18 @@
                 </div>
                 <div id='opium' class=inner style='visibility: hidden'>
                     <p id = 'opium-scenario'></p>
-                    <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
+                    <button type="button" onclick = "opium('overboard')" class="btn btn-primary">Toss it overboard!</button>
+                    <button type="button" onclick = "opium('libertarian')" class="btn btn-primary">Whatever makes them happy...</button>
+                    <button type="button" onclick = "opium('confiscate')" class="btn btn-primary">Mine now!</button>
+                    <button type="button" onclick = "opium('plank')" class="btn btn-danger">To the plank with ye!</button>
                 </div>
-                <div id='stowaway' class=inner style='visibility: hidden'>
-                    <p>I spy a juicy merchant vessel ahead! What's your call?</p>
-                    <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
+                <div id='treasureHunt' class=inner style='visibility: hidden'>
+                    <p>We are nearing an island where Captain Blackbeard is rumored to have buried his treasure.</p>
+                    <button type="button" onclick = "treasureHunt('treasureHunt')" class="btn btn-danger">Treasure hunt!</button>
+                    <button type="button" onclick = "treasureHunt('lame')" class="btn btn-primary">This is childs' play.</button>
                 </div>
               </div>
+              <div id='alert'></div>
         </div>
     </body>
     <script>
@@ -92,6 +95,14 @@
         if(!localStorage.getItem("daysLeft") || localStorage.getItem("daysLeft") == 0)
         {
             localStorage.setItem("daysLeft", 10);
+        }
+        if(!localStorage.getItem("enemyFighting"))
+        {
+            localStorage.setItem("enemyFighting",0);
+        }
+        if(!localStorage.getItem("enemySailing"))
+        {
+            localStorage.setItem("enemySailing", 0);
         }
         if(localStorage.getItem("event")=="false")
         {
@@ -114,13 +125,20 @@
                 return;
             }
             localStorage.setItem("morale", localStorage.getItem("morale")-1);
-            if(localStorage.getItem("morale") == 0)
+            if(localStorage.getItem("morale") <= 0)
             {
                 mutiny();
                 return false;
             }
+            if(JSON.parse(localStorage.getItem("crew")).length == 0)
+            {
+                noCrew();
+                return false;
+            }
             localStorage.setItem("event", "false");
             localStorage.setItem("position", -1);
+            localStorage.setItem("enemyFighting", -1);
+            localStorage.setItem("enemySailing", -1);
             localStorage.setItem("daysLeft", localStorage.getItem("daysLeft")-1);
             updatePrices();
             if(localStorage.getItem("daysLeft") == 0)
@@ -131,6 +149,11 @@
         function mutiny()
         {
             window.location.href = "mutiny.html";
+            return false;
+        }
+        function noCrew()
+        {
+            window.location.href = "lostAtSea.html";
             return false;
         }
         function updatePrices() //function that updates prices
@@ -194,7 +217,7 @@
             if (Math.random() >= 0.5) // an event occurs
             {
                 var chance = Math.random()
-                if(chance <= 0.1)
+                if(chance <= 0.15)
                 {
                     last = 'pirates';
                 }
@@ -205,8 +228,8 @@
                 }
                 else
                 {
-                    var specialEvents = ["newCrew", "disease", "opium", "stowaway"];
-                    var whichOne = Math.floor(Math.random() * (specialEvents.length-1));
+                    var specialEvents = ["newCrew", "disease", "opium", "treasureHunt"];
+                    var whichOne = Math.floor(Math.random() * (specialEvents.length));
                     node=document.getElementById(specialEvents[whichOne]);
                     last = specialEvents[whichOne];
                 }
@@ -226,14 +249,43 @@
             var node;
             node=document.getElementById(input);
             node.style.visibility = 'visible';
+            if(input == "merchant")
+            {
+                if(localStorage.getItem("enemySailing") == -1)
+                {
+                    localStorage.setItem("enemySailing", Math.floor(Math.random() * 1501)); 
+                }
+                document.getElementById("merchant-scenario").innerHTML = "I see a merchant ship full of doubloons! We have a " + 
+                (getChance(getPlayerPilotingStat(), parseInt(localStorage.getItem("enemySailing"))) * 100).toFixed(2) + "% chance of catching up to them.";
+            }
+            if(input == "pirates")
+            {
+                if(localStorage.getItem("enemySailing") == -1)
+                {
+                    localStorage.setItem("enemyFighting", Math.floor(Math.random() * 1501)); 
+                    localStorage.setItem("enemySailing", Math.floor(Math.random() * 1501)); 
+                }
+                document.getElementById("pirate-scenario").innerHTML = "An enemy pirate ship is chasing us! We have a " + 
+                (getChance(getPlayerFightingStat(), parseInt(localStorage.getItem("enemyFighting"))) * 100).toFixed(2) + "% chance of winning the battle and a " +
+                (getChance(getPlayerPilotingStat(), parseInt(localStorage.getItem("enemySailing"))) * 100).toFixed(2) + "% chance of fleeing.";
+            }
             if(input == "disease")
-                    {
-                        var crew = JSON.parse(localStorage.getItem("crew"));
-                        if(localStorage.getItem("position") == -1){
-                        localStorage.setItem("position", Math.floor(Math.random()*crew.length));
-                        }
-                        document.getElementById("disease-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has come down with a strange cough."
-                    }
+            {
+                var crew = JSON.parse(localStorage.getItem("crew"));
+                if(localStorage.getItem("position") == -1){
+                localStorage.setItem("position", Math.floor(Math.random()*crew.length));
+                }
+            document.getElementById("disease-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has come down with a strange cough."
+            }
+            if(input == "opium")
+            {
+                var crew = JSON.parse(localStorage.getItem("crew"));
+                if(localStorage.getItem("position") == -1){
+                localStorage.setItem("position", Math.floor(Math.random()*crew.length));
+                }
+            document.getElementById("opium-scenario").innerHTML = crew[parseInt(localStorage.getItem("position"))]["name"] + " has smuggled a pile of opium on board."
+            }
+        
         }
     </script>
 </html>

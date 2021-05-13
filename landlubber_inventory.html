@@ -28,7 +28,7 @@
                         <li class="nav-item">
                             <a href="inn.html" class="nav-link">Inn</a>
                         </li>
-                        <a class="btn btn-danger" href="navigation.html" role="button">Return to Ship</a>
+                        <a class="btn btn-danger" onclick="returnToShip()" role="button">Return to Ship</a>
                     </ul>
                 </div>
             </nav>
@@ -37,6 +37,7 @@
                 <h1>Inventory</h1>
 
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item" id="inventory-doubloons">Doubloons: 0</li>
                     <li class="list-group-item" id="inventory-gold">Gold: 0</li>
                     <li class="list-group-item" id="inventory-spices">Spices: 0</li>
                     <li class="list-group-item" id="inventory-rum">Rum: 0</li>
@@ -45,13 +46,12 @@
                     <li class="list-group-item" id="inventory-sugar">Sugar: 0</li>
                 </ul>
             </div>
-
-            <button type="button" onclick = "buy('Spices')" class="btn btn-primary">Buy Spices</button>
         </div>
     </body>
     <script>
         refreshPrices();
         function refreshPrices() {
+            document.getElementById("inventory-doubloons").innerHTML = "Doubloons: " + JSON.parse(localStorage.getItem("doubloons"));
             document.getElementById("inventory-gold").innerHTML = "Gold: " + JSON.parse(localStorage.getItem("inventory"))["Gold"];
             document.getElementById("inventory-spices").innerHTML = "Spices: " + JSON.parse(localStorage.getItem("inventory"))["Spices"];
             document.getElementById("inventory-rum").innerHTML = "Rum: " + JSON.parse(localStorage.getItem("inventory"))["Rum"];
@@ -65,6 +65,19 @@
             localStorage.setItem("inventory", JSON.stringify(inventory));
             
             refreshPrices();
+        }
+        function returnToShip()
+        {
+            if(JSON.parse(localStorage.getItem("crew")).length <= 15)
+            {
+                window.location.href = "navigation.html";
+                return false;
+            }
+            else
+            {
+                alert("Yer ship is overcrowded, captain! Dismiss some men to get back to sailing.");
+                return;
+            }
         }
     </script>
 </html>
