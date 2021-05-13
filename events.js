@@ -292,7 +292,7 @@ function pirateLosses(enemyFighting)
         inventory["Opium"] -= num;
         spoils = spoils.replace("goods", num + " kilos of opium");
         document.getElementById("alert").innerHTML += spoils;
-        spoils = spoils.replace(num + " kilos of gold", "goods");
+        spoils = spoils.replace(num + " kilos of opium", "goods");
         }
 
         if(inventory["Tobacco"] > 0)
