@@ -290,7 +290,7 @@ function pirateLosses(enemyFighting)
         {
         num = Math.ceil(Math.random()*inventory["Opium"]);
         inventory["Opium"] -= num;
-        spoils = spoils.replace("goods", num + " kilos of gold");
+        spoils = spoils.replace("goods", num + " kilos of opium");
         document.getElementById("alert").innerHTML += spoils;
         spoils = spoils.replace(num + " kilos of gold", "goods");
         }
