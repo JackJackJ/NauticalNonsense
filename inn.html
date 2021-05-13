@@ -55,40 +55,46 @@
                         <button type="button" onclick = "recruit(5)" class="btn btn-primary" disabled>Recruit</button>
                     </li>
                 </ul>
+                <p id = "doubloons"></p>
             </div>
         </div>
     </body>
     <script>
         refreshInn();
+        document.getElementById("doubloons").innerHTML = "Doubloons: " + localStorage.getItem("doubloons");
         function refreshInn()
         {
             var disabledButton = '<button type="button" class="btn btn-primary" disabled>Recruit</button>';
             var enabledButton = '<button type="button" onclick = "recruit({number})" class="btn btn-primary mr-3">Recruit</button>'
             var crew = JSON.parse(localStorage.getItem("crew"));
             var inn = JSON.parse(localStorage.getItem("inn"));
-            if(crew.length < 15)
+            for (var i = 0; i < 5; i++) // replace all slots with disabled buttons
             {
-                for (var i = 0; i < 5; i++) // replace all slots with disabled buttons
-                {
-                    document.getElementById("crew-" + i).innerHTML = disabledButton;
-                }
-            }   
+                document.getElementById("crew-" + i).innerHTML = disabledButton;
+            } 
             for (var i = 0; i < inn.length; i++)
             {
                 if (inn[i] != null)
-                    document.getElementById("crew-" + i).innerHTML = enabledButton.replace("{number}", i + "") + inn[i]["name"] + " (F:" + inn[i]["fighting"] + ", P: " + inn[i]["piloting"] + ")";
+                    document.getElementById("crew-" + i).innerHTML = enabledButton.replace("{number}", i + "") + inn[i]["name"] + " (Fighting: " + inn[i]["fighting"] + ", Sailing: " + inn[i]["piloting"] + ", Signing Bonus: " + 2*(inn[i]["piloting"]+inn[i]["fighting"]) + ")";
             }
         }
         function recruit(number)
         {
             var inn = JSON.parse(localStorage.getItem("inn"));
             var crew = JSON.parse(localStorage.getItem("crew"));
+            var doubloons = parseInt(localStorage.getItem("doubloons"));
+            if(doubloons < 2*(inn[number]["piloting"]+inn[number]["fighting"]) || crew.length >= 15)
+                return;
+            else{
             crew.push(inn[number]);
+            doubloons -= 2*(inn[number]["piloting"]+inn[number]["fighting"])
             inn[number] = null;
             localStorage.setItem("inn", JSON.stringify(inn));
             localStorage.setItem("crew", JSON.stringify(crew));
-            
+            localStorage.setItem("doubloons", doubloons);
+            }
             refreshInn();
+            document.getElementById("doubloons").innerHTML = "Doubloons: " + localStorage.getItem("doubloons");
         }
         
     </script>
