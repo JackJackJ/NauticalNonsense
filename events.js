@@ -145,7 +145,7 @@ function treasureHunt(action)
         else if(hunt > .5)
         {
             document.getElementById('treasureHunt').innerHTML = "Arrrgh! You find a chest full of doubloons. A good reward for the extra few days of journey!";
-            var num = Math.ceil(.75 + Math.random() * .75 * 500);
+            var num = Math.ceil((.75 + Math.random() * .75) * 500);
             doubloons += num;
             morale +=  Math.floor(num*(3/17)/2);
             localStorage.setItem("daysLeft", parseInt(localStorage.getItem("daysLeft"))+2);
@@ -398,7 +398,7 @@ function merchantSpoils()
         document.getElementById("alert").innerHTML += spoils;
         spoils = spoils.replace(num + " kilos of sugar", "goods");
     }
-    num = Math.ceil(.75 + Math.random() * .75 * 500);
+    num = Math.ceil((.75 + Math.random() * .75) * 500);
     doubloons += num;
     spoils = spoils.replace("goods", num + " doubloons");
     morale +=  Math.floor(num*(3/17)/2);
@@ -539,7 +539,7 @@ function pirateSpoils(enemyFighting)
             crew.splice(pos,1);
             morale -= 10;
         }
-        num = Math.ceil(.75 + Math.random() * .75 * 500);
+        num = Math.ceil((.75 + Math.random() * .75) * 500);
         doubloons += num;
         spoils = spoils.replace("goods", num + " doubloons");
         morale +=  Math.floor(num*(3/17)/2);
@@ -610,7 +610,7 @@ function pirateSpoils(enemyFighting)
             crew.splice(pos,1);
             morale -= 10;
         }
-        num = Math.ceil(.75 + Math.random() * .75 * 500);
+        num = Math.ceil((.75 + Math.random() * .75) * 500);
         doubloons += num;
         spoils = spoils.replace("goods", num + " doubloons");
         document.getElementById('alert').innerHTML += spoils;
