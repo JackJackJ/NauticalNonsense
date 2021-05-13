@@ -77,12 +77,13 @@
                     <button type="button" onclick = "opium('confiscate')" class="btn btn-primary">Mine now!</button>
                     <button type="button" onclick = "opium('plank')" class="btn btn-danger">To the plank with ye!</button>
                 </div>
-                <div id='stowaway' class=inner style='visibility: hidden'>
-                    <p>I spy a juicy merchant vessel ahead! What's your call?</p>
-                    <button type="button" onclick = "" class="btn btn-danger">Go after it!</button>
-                    <button type="button" onclick = "" class="btn btn-primary">Leave them be.</button>
+                <div id='treasureHunt' class=inner style='visibility: hidden'>
+                    <p>We are nearing an island where Captain Blackbeard is rumored to have buried his treasure.</p>
+                    <button type="button" onclick = "treasureHunt('treasureHunt')" class="btn btn-danger">Treasure hunt!</button>
+                    <button type="button" onclick = "treasureHunt('lame')" class="btn btn-primary">This is childs' play.</button>
                 </div>
               </div>
+              <div id='alert'></div>
         </div>
     </body>
     <script>
@@ -123,10 +124,15 @@
                 alert("There are pressing matters at hand, captain!")
                 return;
             }
-            localStorage.setItem("morale", localStorage.getItem("morale")-1);
-            if(localStorage.getItem("morale") == 0)
+            localStorage.setItem("morale", localStorage.getItem("morale")-2);
+            if(localStorage.getItem("morale") <= 0)
             {
                 mutiny();
+                return false;
+            }
+            if(JSON.parse(localStorage.getItem("crew")).length == 0)
+            {
+                noCrew();
                 return false;
             }
             localStorage.setItem("event", "false");
@@ -143,6 +149,11 @@
         function mutiny()
         {
             window.location.href = "mutiny.html";
+            return false;
+        }
+        function noCrew()
+        {
+            window.location.href = "lostAtSea.html";
             return false;
         }
         function updatePrices() //function that updates prices
@@ -206,7 +217,7 @@
             if (Math.random() >= 0.5) // an event occurs
             {
                 var chance = Math.random()
-                if(chance <= 0.1)
+                if(chance <= 0.15)
                 {
                     last = 'pirates';
                 }
@@ -217,8 +228,8 @@
                 }
                 else
                 {
-                    var specialEvents = ["newCrew", "disease", "opium", "stowaway"];
-                    var whichOne = Math.floor(Math.random() * (specialEvents.length-1));
+                    var specialEvents = ["newCrew", "disease", "opium", "treasureHunt"];
+                    var whichOne = Math.floor(Math.random() * (specialEvents.length));
                     node=document.getElementById(specialEvents[whichOne]);
                     last = specialEvents[whichOne];
                 }

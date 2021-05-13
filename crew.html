@@ -33,6 +33,7 @@
             <div class="pt-3">
                 <h1>Captain,</h1>
                 <h2>Your crew...</h2>
+                <p id = "roster"></p>
             </div>
             <div id="crewmates" class="pt-3">
             
@@ -42,6 +43,7 @@
     </body>
     <script>
         updateCrew();
+        document.getElementById("roster").innerHTML = JSON.parse(localStorage.getItem("crew")).length + "/15 Crew Members";
         function updateCrew()
         {
             document.getElementById("crewmates").innerHTML = "";

@@ -33,6 +33,7 @@
                 <h1>Inventory</h1>
 
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item" id="inventory-doubloons">Doubloons: 0</li>
                     <li class="list-group-item" id="inventory-gold">Gold: 0</li>
                     <li class="list-group-item" id="inventory-spices">Spices: 0</li>
                     <li class="list-group-item" id="inventory-rum">Rum: 0</li>
@@ -46,6 +47,7 @@
     <script>
         refreshPrices();
         function refreshPrices() {
+            document.getElementById("inventory-doubloons").innerHTML = "Doubloons: " + JSON.parse(localStorage.getItem("doubloons"));
             document.getElementById("inventory-gold").innerHTML = "Gold: " + JSON.parse(localStorage.getItem("inventory"))["Gold"];
             document.getElementById("inventory-spices").innerHTML = "Spices: " + JSON.parse(localStorage.getItem("inventory"))["Spices"];
             document.getElementById("inventory-rum").innerHTML = "Rum: " + JSON.parse(localStorage.getItem("inventory"))["Rum"];
