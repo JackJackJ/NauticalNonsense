@@ -41,51 +41,63 @@
                 <h1>Captain,</h1>
                 <!-- Content ends here -->
             </div>
-            <div class="pt-3">
+            <ul class="list-group list-group-flush pt-3">
                 <p class = "lead" id = "doubloons"></p>
-                <p class="lead" id = "spice"></p>
-                <p class="lead" id = "inventory-spices"></p>
-                <button type="button" onclick = "buy('Spices')" class="btn btn-primary">Buy Spices</button>
-                <button type="button" onclick = "buyMax('Spices')" class="btn btn-primary">Buy Maximum Spices</button>
-                <button type="button" onclick = "sell('Spices')" class="btn btn-primary">Sell Spices</button>
-                <button type="button" onclick = "sellAll('Spices')" class="btn btn-primary">Sell All Spices</button>
-                <p class="lead" id = "gold"></p>
-                <p class="lead" id = "inventory-gold"></p>
-                <button type="button" onclick = "buy('Gold')" class="btn btn-primary">Buy Gold</button>
-                <button type="button" onclick = "buyMax('Gold')" class="btn btn-primary">Buy Maximum Gold</button>
-                <button type="button" onclick = "sell('Gold')" class="btn btn-primary">Sell Gold</button>
-                <button type="button" onclick = "sellAll('Gold')" class="btn btn-primary">Sell All Gold</button>
-                <p class="lead" id = "rum"></p>
-                <p class="lead" id = "inventory-rum"></p>
-                <button type="button" onclick = "buy('Rum')" class="btn btn-primary">Buy Rum</button>
-                <button type="button" onclick = "buyMax('Rum')" class="btn btn-primary">Buy Maximum Rum</button>
-                <button type="button" onclick = "sell('Rum')" class="btn btn-primary">Sell Rum</button>
-                <button type="button" onclick = "sellAll('Rum')" class="btn btn-primary">Sell All Rum</button>
-                <p class="lead" id = "opium"></p>
-                <p class="lead" id = "inventory-opium"></p>
-                <button type="button" onclick = "buy('Opium')" class="btn btn-primary">Buy Opium</button>
-                <button type="button" onclick = "buyMax('Opium')" class="btn btn-primary">Buy Maximum Opium</button>
-                <button type="button" onclick = "sell('Opium')" class="btn btn-primary">Sell Opium</button>
-                <button type="button" onclick = "sellAll('Opium')" class="btn btn-primary">Sell All Opium</button>
-                <p class="lead" id = "tobacco"></p>
-                <p class="lead" id = "inventory-tobacco"></p>
-                <button type="button" onclick = "buy('Tobacco')" class="btn btn-primary">Buy Tobacco</button>
-                <button type="button" onclick = "buyMax('Tobacco')" class="btn btn-primary">Buy Maximum Tobacco</button>
-                <button type="button" onclick = "sell('Tobacco')" class="btn btn-primary">Sell Tobacco</button>
-                <button type="button" onclick = "sellAll('Tobacco')" class="btn btn-primary">Sell All Tobacco</button>
-                <p class="lead" id = "sugar"></p>
-                <p class="lead" id = "inventory-sugar"></p>
-                <button type="button" onclick = "buy('Sugar')" class="btn btn-primary">Buy Sugar</button>
-                <button type="button" onclick = "buyMax('Sugar')" class="btn btn-primary">Buy Maximum Sugar</button>
-                <button type="button" onclick = "sell('Sugar')" class="btn btn-primary">Sell Sugar</button>
-                <button type="button" onclick = "sellAll('Sugar')" class="btn btn-primary">Sell All Sugar</button>
-                <!-- <script>
+                <li class="list-group-item">
+                    <p class="lead" id = "inventory-spices"></p>
+                    <p class="lead" id = "spice"></p>
+                    <button type="button" onclick = "buy('Spices')" class="btn btn-primary">Buy Spices</button>
+                    <button type="button" onclick = "buyMax('Spices')" class="btn btn-primary">Buy Maximum Spices</button>
+                    <button type="button" onclick = "sell('Spices')" class="btn btn-primary">Sell Spices</button>
+                    <button type="button" onclick = "sellAll('Spices')" class="btn btn-primary">Sell All Spices</button>
+                </li>
+                <li class="list-group-item">
+                    <p class="lead" id = "inventory-gold"></p>
+                    <p class="lead" id = "gold"></p>
+                    <button type="button" onclick = "buy('Gold')" class="btn btn-primary">Buy Gold</button>
+                    <button type="button" onclick = "buyMax('Gold')" class="btn btn-primary">Buy Maximum Gold</button>
+                    <button type="button" onclick = "sell('Gold')" class="btn btn-primary">Sell Gold</button>
+                    <button type="button" onclick = "sellAll('Gold')" class="btn btn-primary">Sell All Gold</button>
+                </li>
+                <li class="list-group-item">
+                    <p class="lead" id = "inventory-rum"></p>
+                    <p class="lead" id = "rum"></p>
+                    <button type="button" onclick = "buy('Rum')" class="btn btn-primary">Buy Rum</button>
+                    <button type="button" onclick = "buyMax('Rum')" class="btn btn-primary">Buy Maximum Rum</button>
+                    <button type="button" onclick = "sell('Rum')" class="btn btn-primary">Sell Rum</button>
+                    <button type="button" onclick = "sellAll('Rum')" class="btn btn-primary">Sell All Rum</button>
+                </li>
+                <li class="list-group-item">
+                    <p class="lead" id = "inventory-opium"></p>
+                    <p class="lead" id = "opium"></p>
+                    <button type="button" onclick = "buy('Opium')" class="btn btn-primary">Buy Opium</button>
+                    <button type="button" onclick = "buyMax('Opium')" class="btn btn-primary">Buy Maximum Opium</button>
+                    <button type="button" onclick = "sell('Opium')" class="btn btn-primary">Sell Opium</button>
+                    <button type="button" onclick = "sellAll('Opium')" class="btn btn-primary">Sell All Opium</button>
+                </li>
+                <li class="list-group-item">
+                    <p class="lead" id = "inventory-tobacco"></p>
+                    <p class="lead" id = "tobacco"></p>
+                    <button type="button" onclick = "buy('Tobacco')" class="btn btn-primary">Buy Tobacco</button>
+                    <button type="button" onclick = "buyMax('Tobacco')" class="btn btn-primary">Buy Maximum Tobacco</button>
+                    <button type="button" onclick = "sell('Tobacco')" class="btn btn-primary">Sell Tobacco</button>
+                    <button type="button" onclick = "sellAll('Tobacco')" class="btn btn-primary">Sell All Tobacco</button>
+                </li>
+                <li class="list-group-item">
+                    <p class="lead" id = "inventory-sugar"></p>
+                    <p class="lead" id = "sugar"></p>
+                    <button type="button" onclick = "buy('Sugar')" class="btn btn-primary">Buy Sugar</button>
+                    <button type="button" onclick = "buyMax('Sugar')" class="btn btn-primary">Buy Maximum Sugar</button>
+                    <button type="button" onclick = "sell('Sugar')" class="btn btn-primary">Sell Sugar</button>
+                    <button type="button" onclick = "sellAll('Sugar')" class="btn btn-primary">Sell All Sugar</button>
+                </li>
+                    <!-- <script>
                     document.write("Due to local conflicts, the price of guns has skyrocketed.")
                 </script>
                 <p class="lead">Due to local conflicts, the price of guns has skyrocketed.</p>
                 <p class="lead">Traders have flooded the local market with gold, causing the price to become low.</p>
-                <p class="lead">The bank is demanding you pay your debt (51,234 doubloons).</p>
-              </div> -->
+                <p class="lead">The bank is demanding you pay your debt (51,234 doubloons).</p> -->
+            </ul>
         </div>
     </body>
     <script>
