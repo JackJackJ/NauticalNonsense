@@ -469,7 +469,7 @@ function pirateSpoils(enemyFighting)
             document.getElementById("alert").innerHTML += spoils;
             spoils = spoils.replace(num + " kilos of sugar", "goods");
         }
-        num = Math.ceil(.75 + Math.random() * .75 * 500);
+        num = Math.ceil((.75 + Math.random() * .75) * 500);
         doubloons += num;
         spoils = spoils.replace("goods", num + " doubloons");
         morale +=  Math.floor(num*(3/17)/2);
