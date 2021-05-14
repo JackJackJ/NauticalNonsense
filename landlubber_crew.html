@@ -52,7 +52,7 @@
             for (var i = 0; i < crew.length; i++)
             {
                 var dismissButton = '<button type="button" onclick = "dismissCrewmate(' + i + ')" class="btn btn-danger mr-3">Dismiss</button>';
-                var name = crew[i]["name"] + " (Fighting:" + crew[i]["fighting"] + ", Sailing: " + crew[i]["piloting"] + ")";
+                var name = crew[i]["name"] + " (Fighting:" + crew[i]["fighting"] + ", Sailing: " + crew[i]["piloting"]+ ", Morale: " + crew[i]["morale"]+ ", Days Aboard: " + crew[i]["days"] + ")";
 
                 document.getElementById("crewmates").innerHTML += '<p class="lead">' + dismissButton + name + '</p>';
             }

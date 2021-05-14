@@ -27,6 +27,8 @@ function newCrew(action)
                     "name": name,
                     "fighting": fighting,
                     "piloting": piloting,
+                    "morale": 50,
+                    "days": 0,
                 }
                 crew.push(crewmate);
             }
@@ -655,6 +657,19 @@ function getPlayerPilotingStat() // adds the fighting stats of all of the player
         var crewmate = crew[i];
         var pilotingStat = crewmate["piloting"];
         total += pilotingStat;
+    }
+    return total;
+}
+
+function getMutinyFightingStats(group) // adds the fighting stats of all of the mutineers or loyalists
+{
+    var crew = group;
+    var total = 0;
+    for (var i = 0; i < crew.length; i++)
+    {
+        var crewmate = crew[i];
+        var fightingStat = crewmate["fighting"];
+        total += fightingStat;
     }
     return total;
 }

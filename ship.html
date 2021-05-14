@@ -125,11 +125,15 @@
                 return;
             }
             localStorage.setItem("morale", localStorage.getItem("morale")-1);
-            if(localStorage.getItem("morale") <= 0)
+            var crew = JSON.parse(localStorage.getItem("crew"));
+            for(i = 0; i < crew.length; i++)
             {
-                mutiny();
-                return false;
+                crew[i]["morale"] -= 1;
+                crew[i]["days"] += 1;
+                if(crew[i]["morale"] < 1)
+                    mutiny();
             }
+            localStorage.setItem("crew", JSON.stringify(crew));
             if(JSON.parse(localStorage.getItem("crew")).length == 0)
             {
                 noCrew();
@@ -148,8 +152,19 @@
         }
         function mutiny()
         {
-            window.location.href = "mutiny.html";
-            return false;
+            var crew = JSON.parse(localStorage.getItem("crew"));
+            var mutineers = [];
+            var loyalists = [];
+            for(i = 0; i < crew.length; i++)
+            {
+                if(crew[i]["morale"] < 21)
+                    mutineers.push(crew[i]);
+                else
+                    loyalists.push(crew[i]);
+            }
+            
+            //window.location.href = "mutiny.html";
+            //return false;
         }
         function noCrew()
         {
