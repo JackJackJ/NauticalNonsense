@@ -50,6 +50,9 @@
                 <div id='nothing' class=inner style='visibility: hidden'><p>A calm day at sea.</p></div>
                 <div id='pirates' class=inner style='visibility: hidden'>
                     <p id = 'pirate-scenario'></p>
+                </div>
+                <div id='pirates' class=inner style='visibility: hidden'>
+                    <p id = 'pirate-scenario'></p>
                     <button type="button" onclick = "pirates('fight', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-danger">Fight!</button>
                     <button type="button" onclick = "pirates('flee', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-primary">Flee!</button>
                 </div>
@@ -163,8 +166,11 @@
                     loyalists.push(crew[i]);
             }
             
-            //window.location.href = "mutiny.html";
-            //return false;
+            else
+            {
+                window.location.href = "mutiny.html";
+                return false;
+            }
         }
         function noCrew()
         {

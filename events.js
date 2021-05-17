@@ -59,7 +59,10 @@ function disease(action)
             crew.splice(pos,1);
         }
         localStorage.setItem("crew", JSON.stringify(crew));
-        localStorage.setItem("morale", parseInt(localStorage.getItem("morale"))-5);
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]-=5;
+        }
         document.getElementById('disease').innerHTML = "Your actions get the outbreak mostly under control, but some still perish of the disease.";
     }
     if(action == "denial")
@@ -76,45 +79,60 @@ function disease(action)
             crew.splice(pos,1);
         }
         localStorage.setItem("crew", JSON.stringify(crew));
-        localStorage.setItem("morale", parseInt(localStorage.getItem("morale"))-10);
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]-=10;
+        }
         document.getElementById('disease').innerHTML = "The disease ravages the ship and leaves much of your crew dead. The survivors' faith in your leadership is greatly shaken.";
     }
     if(action == "plank")
     {
         execute();
-        localStorage.setItem("morale", parseInt(localStorage.getItem("morale"))-10);
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]-=10;
+        }
+        localStorage.setItem("crew", JSON.stringify(crew));
         document.getElementById('disease').innerHTML = "No man dares cough in your presence again.";
     }
 }
 function opium(action)
 {
+    var crew = JSON.parse(localStorage.getItem("crew"));
     if(action == "overboard")
     {
         localStorage.setItem("event", "passed");
         activeEvent = false;
-        localStorage.setItem("morale", parseInt(localStorage.getItem("morale"))-1);
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]-=1;
+        }
         document.getElementById('opium').innerHTML = "Some of your men grumble. They ought to be grateful they aren't walking the plank.";
     }
     if(action == "libertarian")
     {
-        localStorage.setItem("morale", parseInt(localStorage.getItem("morale"))+10);
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]+=10;
+        }
         localStorage.setItem("event", "passed");
         activeEvent = false;
-        var crew = JSON.parse(localStorage.getItem("crew"));
         for(i = 0; i < Math.ceil(Math.random()*5); i++)
         {
             var position = Math.floor(Math.random()*crew.length);
             crew[position]["fighting"] = Math.floor(parseInt(crew[position]["fighting"])*.5);
             crew[position]["piloting"] = Math.floor(parseInt(crew[position]["piloting"])*.5);
         } 
-        localStorage.setItem("crew", JSON.stringify(crew));
         document.getElementById('opium').innerHTML = "A good deal of your men wind up getting hooked on opium. While the addicts are substantially worse at being pirates, they are at least easier to order around";
     }
     if(action == "confiscate")
     {
         localStorage.setItem("event", "passed");
         activeEvent = false;
-        localStorage.setItem("morale", parseInt(localStorage.getItem("morale"))-3);
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]-=3;
+        }
         var inventory = JSON.parse(localStorage.getItem("inventory"));
         inventory["Opium"] = inventory["Opium"] + 1;
         localStorage.setItem("inventory", JSON.stringify(inventory));
@@ -123,12 +141,17 @@ function opium(action)
     if(action == "plank")
     {
         execute();
-        localStorage.setItem("morale", parseInt(localStorage.getItem("morale"))-8);
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]-=10;
+        }
         document.getElementById('opium').innerHTML = "You enforce a strict no drug policy on the ship.";
     }
+    localStorage.setItem("crew", JSON.stringify(crew));
 }
 function treasureHunt(action)
 {
+    var crew = JSON.parse(localStorage.getItem("crew"));
     var doubloons = parseInt(localStorage.getItem("doubloons"));
     var inventory = JSON.parse(localStorage.getItem("inventory"));
     var morale = parseInt(localStorage.getItem("morale"));
@@ -149,7 +172,11 @@ function treasureHunt(action)
             document.getElementById('treasureHunt').innerHTML = "Arrrgh! You find a chest full of doubloons. A good reward for the extra few days of journey!";
             var num = Math.ceil((.75 + Math.random() * .75) * 500);
             doubloons += num;
-            morale +=  Math.floor(num*(3/17)/2);
+            morale =  Math.floor(num*(3/17)/(2*crew.length));
+            for(i = 0; i < crew.length; i++)
+            {
+                crew[i]["morale"]+=morale;
+            }
             localStorage.setItem("daysLeft", parseInt(localStorage.getItem("daysLeft"))+2);
             localStorage.setItem("doubloons", doubloons);
             localStorage.setItem("morale", morale);
@@ -166,6 +193,7 @@ function treasureHunt(action)
         activeEvent = false;
         document.getElementById('treasureHunt').innerHTML = "What sort of pirate doesn't want to go on a treasure hunt?";
     }
+    localStorage.setItem("crew", JSON.stringify(crew));
 }
 
 
@@ -324,7 +352,10 @@ function pirateLosses(enemyFighting)
             document.getElementById('alert').innerHTML += losses;
             losses = losses.replace(crew[pos]["name"], 'Pirate');
             crew.splice(pos,1);
-            morale -= 10;
+            for(i = 0; i < crew.length; i++)
+            {
+                crew[i]["morale"]-=10;
+            }
             }
         }
         num = Math.ceil(Math.random()*doubloons);
@@ -351,6 +382,7 @@ function merchantSpoils()
     var spoils = '<div class="alert alert-success alert-dismissible fade show" role="alert">You plundered goods.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
     var doubloons = parseInt(localStorage.getItem("doubloons"));
     var morale = parseInt(localStorage.getItem("morale"));
+    var crew = JSON.parse(localStorage.getItem("crew"));
     document.getElementById('merchant').innerHTML = "Yo-ho-ho! No one outruns you, Captain. We have ransacked the cargo from their ship.";
     if(Math.random() > .5)
     {
@@ -403,12 +435,17 @@ function merchantSpoils()
     num = Math.ceil((.75 + Math.random() * .75) * 500);
     doubloons += num;
     spoils = spoils.replace("goods", num + " doubloons");
-    morale +=  Math.floor(num*(3/17)/2);
+    var morale =  Math.floor(num*(3/17)/(2*crew.length));
+    for(i = 0; i < crew.length; i++)
+    {
+        crew[i]["morale"]+=morale;
+    }
     document.getElementById('alert').innerHTML += spoils;
     spoils = spoils.replace(num + " doubloons", "goods");
     localStorage.setItem("inventory", JSON.stringify(inventory));
     localStorage.setItem("doubloons", doubloons);
     localStorage.setItem("morale", morale);
+    localStorage.setItem("crew", JSON.stringify(crew));
 }
 function pirateSpoils(enemyFighting)
 {
@@ -474,7 +511,11 @@ function pirateSpoils(enemyFighting)
         num = Math.ceil((.75 + Math.random() * .75) * 500);
         doubloons += num;
         spoils = spoils.replace("goods", num + " doubloons");
-        morale +=  Math.floor(num*(3/17)/2);
+        var morale =  Math.floor(num*(3/17)/(2*crew.length));
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]+=morale;
+        }    
         document.getElementById("alert").innerHTML += spoils;
         spoils = spoils.replace(num + " doubloons.", "goods");
         localStorage.setItem("inventory", JSON.stringify(inventory));
@@ -539,12 +580,20 @@ function pirateSpoils(enemyFighting)
             document.getElementById('alert').innerHTML += losses;
             losses = losses.replace(crew[pos]["name"], 'Pirate');
             crew.splice(pos,1);
-            morale -= 10;
+            for(i = 0; i < crew.length; i++)
+            {
+                crew[i]["morale"]-=10;
+            }
+        
         }
         num = Math.ceil((.75 + Math.random() * .75) * 500);
         doubloons += num;
         spoils = spoils.replace("goods", num + " doubloons");
-        morale +=  Math.floor(num*(3/17)/2);
+        var morale =  Math.floor(num*(3/17)/(2*crew.length));
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]+=morale;
+        }    
         document.getElementById('alert').innerHTML += spoils;
         spoils = spoils.replace(num + " doubloons", "goods");
         localStorage.setItem("inventory", JSON.stringify(inventory));
@@ -603,21 +652,29 @@ function pirateSpoils(enemyFighting)
             document.getElementById("alert").innerHTML += spoils;
             spoils = spoils.replace(num + " kilos of sugar", "goods");
         }
-        for(i = 0; i < Math.ceil(Math.random()*4); i++)
+        for(i = 0; i < 2 + Math.ceil(Math.random()*4); i++)
         {
             var pos = Math.floor(Math.random()*crew.length);
             losses = losses.replace('Pirate', crew[pos]["name"]);
             document.getElementById('alert').innerHTML += losses;
             losses = losses.replace(crew[pos]["name"], 'Pirate');
             crew.splice(pos,1);
-            morale -= 10;
+            for(i = 0; i < crew.length; i++)
+            {
+                crew[i]["morale"]-=10;
+            }
+        
         }
         num = Math.ceil((.75 + Math.random() * .75) * 500);
         doubloons += num;
         spoils = spoils.replace("goods", num + " doubloons");
         document.getElementById('alert').innerHTML += spoils;
         spoils = spoils.replace(num + " doubloons", "goods");
-        morale +=  Math.floor(num*(3/17)/2);
+        var morale =  Math.floor(num*(3/17)/(2*crew.length));
+        for(i = 0; i < crew.length; i++)
+        {
+            crew[i]["morale"]+=morale;
+        }    
         localStorage.setItem("inventory", JSON.stringify(inventory));
         localStorage.setItem("doubloons", doubloons);
         localStorage.setItem("morale", morale);
@@ -673,7 +730,38 @@ function getMutinyFightingStats(group) // adds the fighting stats of all of the 
     }
     return total;
 }
+function mutinyBattle(playerFightingStat, enemyFightingStat)
+{
+    var sumStat = playerFightingStat + enemyFightingStat;
+    
+    var playerChance = playerFightingStat*1.0 / sumStat;
+    var rand = Math.random();
 
+    if (rand < playerChance) // player wins
+    {
+        return true;
+    }
+    return false;
+}
+function mutinyJS(playerFightingStat, enemyFightingStat)
+{
+    var execute = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Pirate was executed for mutiny.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+    var losses = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Pirate died in combat.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+    if(mutinyBattle(getMutinyFightingStats(loyalists),getMutinyFightingStats(mutineers)))
+    {
+        document.getElementById('alert').innerHTML += '<div class="alert alert-warning alert-dismissible fade show" role="alert">You successfully fended off a mutiny.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        for(i = crew.length-1; i > -1; i--)
+        {
+            for(a = 0; a < crew.length; a++)
+            {
+                if(mutineers[a] == crew[i])
+                {
+                    crew.splice(i,1);
+                }
+            }
+        }
+    }
+}
 /*
 * Initiates a battle between the player and an enemy ship
 * Chance of winning is based on the fighting stat of the player and the enemy

@@ -37,37 +37,37 @@
                 <!-- Content ends here -->
             </div>
             <div class="list-group">
-                <a href="ship.html" class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Charleston')">
+                <a class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Charleston')">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Charleston</h5>
                   </div>
                   <p class="mb-1">The city of pirates.</p>
                 </a>
-                <a href="ship.html" class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('NewYork')">
+                <a class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('NewYork')">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">New York City</h5>
                   </div>
                   <p class="mb-1">The trading center of the New World.</p>
                 </a>
-                <a href="ship.html" class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Panama')">
+                <a class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Panama')">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Panama</h5>
                   </div>
                   <p class="mb-1">The connection between British and Spanish colonies.</p>
                 </a>
-                <a href="ship.html" class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Havana')">
+                <a class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Havana')">
                     <div class="d-flex w-100 justify-content-between">
                       <h5 class="mb-1">Havana</h5>
                     </div>
                     <p class="mb-1">A city rich in natural resources.</p>
                   </a>
-                  <a href="ship.html" class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Lisbon')">
+                  <a class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Lisbon')">
                     <div class="d-flex w-100 justify-content-between">
                       <h5 class="mb-1">Lisbon</h5>
                     </div>
                     <p class="mb-1">The pirate's gateway into Europe.</p>
                   </a>
-                  <a href="ship.html" class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Casablanca')">
+                  <a class="list-group-item list-group-item-action flex-column align-items-start" onclick = "goTo('Casablanca')">
                     <div class="d-flex w-100 justify-content-between">
                       <h5 class="mb-1">Casablanca</h5>
                     </div>
@@ -79,10 +79,26 @@
         document.getElementById("name").innerHTML = "Captain,";
         function goTo(toWhere)
         {
-          if(toWhere == localStorage.getItem("nextCity"))
-            window.location.href = "index.html";
+          if(toWhere == localStorage.getItem("nextCity") && localStorage.getItem("daysLeft") == 0)
+          {
+            goBack();
+            return false;
+          }
+          else if(toWhere == localStorage.getItem("nextCity"))
+          {
+            return;
+          }
           else
+          {
             localStorage.setItem("nextCity", toWhere);
+            window.location.href = "ship.html";
+            localStorage.setItem("daysLeft",10);
+          }
+        }
+        function goBack()
+        {
+          window.location.href = "index.html";
+          return false;
         }
     </script>
 </html>

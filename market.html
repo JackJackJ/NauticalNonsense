@@ -171,7 +171,7 @@
             refreshBalance();
         }
         function sell(item) {
-            var morale = parseInt(localStorage.getItem("morale"));
+            var morale = 0;
             var crew = JSON.parse(localStorage.getItem("crew"));
             var numCrew = crew.length;
             if(numCrew == 0)
@@ -199,13 +199,17 @@
                 morale += Math.ceil(prices[city][num] * .075/numCrew);
                 doubloons += Math.ceil(prices[city][num] * .85);
             }
+            for(i = 0; i < crew.length; i++)
+            {
+                crew[i]["morale"]+=morale;
+            }  
             localStorage.setItem("inventory", JSON.stringify(inventory));
             localStorage.setItem("doubloons", doubloons);
-            localStorage.setItem("morale", morale);
+            localStorage.setItem("crew", JSON.stringify(crew));
             refreshBalance();
         }
         function sellAll(item) {
-            var morale = parseInt(localStorage.getItem("morale"));
+            var morale = 0;
             var crew = JSON.parse(localStorage.getItem("crew"));
             var numCrew = crew.length;
             if(numCrew == 0)
@@ -234,9 +238,13 @@
                 morale += Math.ceil(prices[city][num] * inventory[item] * .075/numCrew);
                 inventory[item] = 0;
             }
+            for(i = 0; i < crew.length; i++)
+            {
+                crew[i]["morale"]+=morale;
+            }  
             localStorage.setItem("inventory", JSON.stringify(inventory));
             localStorage.setItem("doubloons", doubloons);
-            localStorage.setItem("morale", morale);
+            localStorage.setItem("crew", JSON.stringify(crew));
             refreshBalance();
         }
         function returnToShip()
