@@ -584,7 +584,6 @@ function pirateSpoils(enemyFighting)
             {
                 crew[i]["morale"]-=10;
             }
-        
         }
         num = Math.ceil((.75 + Math.random() * .75) * 500);
         doubloons += num;
@@ -663,7 +662,6 @@ function pirateSpoils(enemyFighting)
             {
                 crew[i]["morale"]-=10;
             }
-        
         }
         num = Math.ceil((.75 + Math.random() * .75) * 500);
         doubloons += num;
@@ -743,24 +741,45 @@ function mutinyBattle(playerFightingStat, enemyFightingStat)
     }
     return false;
 }
-function mutinyJS(playerFightingStat, enemyFightingStat)
+function mutinyJS(loyalists, mutineers)
 {
     var execute = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Pirate was executed for mutiny.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
     var losses = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Pirate died in combat.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+    var crew = JSON.parse(localStorage.getItem("crew"));
     if(mutinyBattle(getMutinyFightingStats(loyalists),getMutinyFightingStats(mutineers)))
     {
         document.getElementById('alert').innerHTML += '<div class="alert alert-warning alert-dismissible fade show" role="alert">You successfully fended off a mutiny.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
         for(i = crew.length-1; i > -1; i--)
         {
-            for(a = 0; a < crew.length; a++)
+            for(a = 0; a < mutineers.length; a++)
             {
                 if(mutineers[a] == crew[i])
                 {
-                    crew.splice(i,1);
+                    execute = execute.replace("Pirate", crew[i]["name"]);
+                    document.getElementById('alert').innerHTML += execute;
+                    crew.splice(i,1); 
                 }
             }
         }
+        for(i = 0; i < Math.ceil(Math.random()*2); i++)
+        {
+            var pos = Math.floor(Math.random()*crew.length);
+            losses = losses.replace('Pirate', crew[pos]["name"]);
+            document.getElementById('alert').innerHTML += losses;
+            losses = losses.replace(crew[pos]["name"], 'Pirate');
+            crew.splice(pos,1);
+            for(i = 0; i < crew.length; i++)
+            {
+                crew[i]["morale"]-=10;
+            }
+        }
     }
+    else
+    {
+        window.location.href = "mutiny.html";
+        return false;
+    }
+    localStorage.setItem("crew", JSON.stringify(crew));
 }
 /*
 * Initiates a battle between the player and an enemy ship

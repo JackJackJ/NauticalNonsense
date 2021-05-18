@@ -50,9 +50,6 @@
                 <div id='nothing' class=inner style='visibility: hidden'><p>A calm day at sea.</p></div>
                 <div id='pirates' class=inner style='visibility: hidden'>
                     <p id = 'pirate-scenario'></p>
-                </div>
-                <div id='pirates' class=inner style='visibility: hidden'>
-                    <p id = 'pirate-scenario'></p>
                     <button type="button" onclick = "pirates('fight', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-danger">Fight!</button>
                     <button type="button" onclick = "pirates('flee', localStorage.getItem('enemyFighting'), localStorage.getItem('enemySailing'))" class="btn btn-primary">Flee!</button>
                 </div>
@@ -133,8 +130,6 @@
             {
                 crew[i]["morale"] -= 1;
                 crew[i]["days"] += 1;
-                if(crew[i]["morale"] < 1)
-                    mutiny();
             }
             localStorage.setItem("crew", JSON.stringify(crew));
             if(JSON.parse(localStorage.getItem("crew")).length == 0)
@@ -143,6 +138,11 @@
                 return false;
             }
             localStorage.setItem("event", "false");
+            for(i = 0; i < crew.length; i++)
+            {
+                if(crew[i]["morale"] < 1)
+                    localStorage.setItem("event", "mutiny");
+            }
             localStorage.setItem("position", -1);
             localStorage.setItem("enemyFighting", -1);
             localStorage.setItem("enemySailing", -1);
@@ -165,12 +165,7 @@
                 else
                     loyalists.push(crew[i]);
             }
-            
-            else
-            {
-                window.location.href = "mutiny.html";
-                return false;
-            }
+            mutinyJS(loyalists, mutineers);
         }
         function noCrew()
         {
